@@ -19,7 +19,7 @@ template <typename K, typename V>
 class HashMap {
 private:
     size_t table_size;  // Number of buckets in the hash table
-    std::vector<std::list<std::pair<K, V>>> table;  // Hash table as a vector of lists
+    std::vector<std::list<std::pair<K, V> > > table;  // Hash table as a vector of lists
 
     size_t hashFunction(const K& key) const;  // Computes the hash index for a given key
 
