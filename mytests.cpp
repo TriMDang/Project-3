@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <cassert>
 #include "HashMap.cpp"
+#include "Set.cpp"
 using namespace std;
 
 //==============================================================
@@ -16,7 +17,7 @@ using namespace std;
 // Ensures that keys can be inserted and then found in the map.
 //==============================================================
 void test_insert_and_search() {
-    HashMap<int, std::string> hashMap(10);  // Provide the size argument
+    HashMap<int, string> hashMap(10);  // Provide the size argument
 
     cout << "Testing insert and search...\n";
     hashMap.insert(1, "One");
@@ -40,7 +41,7 @@ void test_insert_and_search() {
 // Ensures that inserting an existing key updates its value.
 //==============================================================
 void test_update_value() {
-    HashMap<int, std::string> hashMap(10);  // Provide the size argument
+    HashMap<int, string> hashMap(10);  // Provide the size argument
 
     cout << "Testing update values...\n";
     hashMap.insert(1, "One");
@@ -59,7 +60,7 @@ void test_update_value() {
 // Ensures that keys can be removed and are no longer searchable.
 //==============================================================
 void test_remove_key() {
-    HashMap<int, std::string> hashMap(10);  // Provide the size argument
+    HashMap<int, string> hashMap(10);  // Provide the size argument
 
     cout << "Testing remove key...\n";
     hashMap.insert(1, "One");
@@ -78,14 +79,14 @@ void test_remove_key() {
 // Ensures that removing a key that doesn't exist throws an exception.
 //==============================================================
 void test_remove_non_existent_key() {
-    HashMap<int, std::string> hashMap(10);  // Provide the size argument
+    HashMap<int, string> hashMap(10);  // Provide the size argument
 
     cout << "Testing remove non-existent key...\n";
 
     try {
         hashMap.remove(999);  // This key doesn't exist
         assert(false);  // Fail the test if no exception is thrown
-    } catch (const std::runtime_error& e) {
+    } catch (const runtime_error& e) {
         cout << "Caught expected exception: " << e.what() << "\n";
     }
 
@@ -97,7 +98,7 @@ void test_remove_non_existent_key() {
 // Ensures that operator[] retrieves and sets values correctly.
 //==============================================================
 void test_operator_brackets() {
-    HashMap<int, std::string> hashMap(10);  // Provide the size argument
+    HashMap<int, string> hashMap(10);  // Provide the size argument
 
     cout << "Testing operator[]...\n";
     hashMap[1] = "One";
@@ -121,7 +122,7 @@ void test_operator_brackets() {
 // Ensures that searching in an empty hash map returns nullptr.
 //==============================================================
 void test_empty_hash_map_search() {
-    HashMap<int, std::string> hashMap(10);  // Provide the size argument
+    HashMap<int, string> hashMap(10);  // Provide the size argument
 
     cout << "Testing empty hash map search...\n";
     cout << "Search Key 1: " << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->value) << "\n";
@@ -136,7 +137,7 @@ void test_empty_hash_map_search() {
 // Ensures that the hash map handles collisions correctly.
 //==============================================================
 void test_collision_handling() {
-    HashMap<int, std::string> hashMap(1);  // Force all keys to collide
+    HashMap<int, string> hashMap(1);  // Force all keys to collide
 
     cout << "Testing collision handling...\n";
     hashMap.insert(1, "One");
@@ -153,6 +154,39 @@ void test_collision_handling() {
 }
 
 //==============================================================
+// Set Constructing test
+// Test if set is properly constructed with the hash map class object. Insert will be used to test hashMap
+//==============================================================
+void SetConstructing(){
+    cout << "constructing a set named setter with size 5" << endl;
+    Set<int, int> setter;
+    setter.hash_set(5);
+    setter.insert(1, 2);
+    cout << "inserting 2 into key 1";
+    cout << "searching for 2...does 2 exist: " << setter.search(2) << endl;
+    cout << "Set Constructor test finished." << endl;
+}
+
+//==============================================================
+// Set copy constructor
+// Test constructing a copied set. 
+//==============================================================
+void MakeCopySet(){
+    cout << "Constructing dataset with size 2..." << endl;
+    Set<int, string> dataset;
+    dataset.hash_set<>
+    dataset.hash_set(2); // I think dataset MUST be defined since both hash_set and set is templated
+    dataset.insert(2, "Twofaced");
+    cout << "Set Copy constructer test finished." << endl;
+}
+
+//==============================================================
+// 
+// 
+//==============================================================
+//void name(){}
+
+//==============================================================
 // Main function
 // Runs all test cases
 //==============================================================
@@ -165,9 +199,10 @@ int main() {
     test_empty_hash_map_search();
     test_collision_handling();
 
-    cout << "All Hash Map tests passed!\n";
-    cout << "Initializing Set (HashMap) tests..." << endl;
+    cout << "All Hash Map tests passed!\n\n";
 
+    cout << "Initializing Set (HashMap) tests..." << endl;
+    SetConstructing();
 
 
     return 0;

@@ -8,8 +8,8 @@
 template <typename K, typename V>
 class Set {
 private:
-    HashMap<K, V> hash_set;
 public:
+    HashMap<K, V> hash_set;
     Set();
     ~Set();
     Set(const Set<K, V>& otherSet);
