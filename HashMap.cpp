@@ -8,6 +8,7 @@
 //==============================================================
 
 #include "HashMap.hpp"
+#include "HashFunction.cpp"
 
 //==============================================================
 // HashMap (constructor)
@@ -38,17 +39,6 @@ HashMap<K, V>::~HashMap() {
         }
     }
     delete[] table;
-}
-
-//==============================================================
-// hashFunction
-// Computes the hash index for a given key.
-// PARAMETERS: key - the key to hash
-// Return value: the computed hash index
-//==============================================================
-template <typename K, typename V>
-int HashMap<K, V>::hashFunction(const K& key) const {
-    return key % table_size;  // Simple modulo-based hash function
 }
 
 //==============================================================
