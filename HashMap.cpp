@@ -15,28 +15,40 @@
 // PARAMETERS: size - the number of buckets in the hash table
 //==============================================================
 template <typename K, typename V>
-HashMap<K, V>::HashMap(size_t size) : table_size(size), table(size) {}
-
-//==============================================================
-// ~HashMap (destructor)
-// Destructor that clears the hash table.
-//==============================================================
-template <typename K, typename V>
-HashMap<K, V>::~HashMap() {
-    for (auto& bucket : table) {
-        bucket.clear();
+HashMap<K, V>::HashMap(size_t size) {
+    table_size = size;
+    table = new Node<K, V>*[table_size];
+    for (size_t i = 0; i < table_size; i++) {
+        table[i] = nullptr;  // Initialize all buckets to null
     }
 }
 
 //==============================================================
+// ~HashMap (destructor)
+// Destructor that clears and deallocates the hash table.
+//==============================================================
+template <typename K, typename V>
+HashMap<K, V>::~HashMap() {
+    for (size_t i = 0; i < table_size; i++) {
+        Node<K, V>* current = table[i];
+        while (current != nullptr) {
+            Node<K, V>* temp = current;
+            current = current->next;
+            delete temp;
+        }
+    }
+    delete[] table;
+}
+
+//==============================================================
 // hashFunction
-// Computes the hash index for a given key using std::hash.
+// Computes the hash index for a given key.
 // PARAMETERS: key - the key to hash
 // Return value: the computed hash index
 //==============================================================
 template <typename K, typename V>
-size_t HashMap<K, V>::hashFunction(const K& key) const {
-    return std::hash<K>()(key) % table_size;
+int HashMap<K, V>::hashFunction(const K& key) const {
+    return key % table_size;  // Simple modulo-based hash function
 }
 
 //==============================================================
@@ -48,14 +60,20 @@ size_t HashMap<K, V>::hashFunction(const K& key) const {
 //==============================================================
 template <typename K, typename V>
 void HashMap<K, V>::insert(const K& key, const V& value) {
-    size_t index = hashFunction(key);
-    for (auto& pair : table[index]) {
-        if (pair.first == key) {
-            pair.second = value;  // Overwrite if the key already exists
+    int index = hashFunction(key);
+    Node<K, V>* current = table[index];
+
+    while (current != nullptr) {
+        if (current->key == key) {  // Key already exists
+            current->value = value;  // Update value
             return;
         }
+        current = current->next;
     }
-    table[index].emplace_back(key, value);  // Add new key-value pair
+
+    // Key not found; insert at the beginning of the list
+    Node<K, V>* newNode = new Node<K, V>{key, value, table[index]};
+    table[index] = newNode;
 }
 
 //==============================================================
@@ -65,13 +83,24 @@ void HashMap<K, V>::insert(const K& key, const V& value) {
 //==============================================================
 template <typename K, typename V>
 void HashMap<K, V>::remove(const K& key) {
-    size_t index = hashFunction(key);
-    for (auto it = table[index].begin(); it != table[index].end(); ++it) {
-        if (it->first == key) {
-            table[index].erase(it);  // Remove the pair from the list
+    int index = hashFunction(key);
+    Node<K, V>* current = table[index];
+    Node<K, V>* prev = nullptr;
+
+    while (current != nullptr) {
+        if (current->key == key) {
+            if (prev == nullptr) {  // Node to remove is the head
+                table[index] = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            delete current;
             return;
         }
+        prev = current;
+        current = current->next;
     }
+
     throw std::runtime_error("Key not found");
 }
 
@@ -84,15 +113,20 @@ void HashMap<K, V>::remove(const K& key) {
 //==============================================================
 template <typename K, typename V>
 V& HashMap<K, V>::operator[](const K& key) {
-    size_t index = hashFunction(key);
-    for (auto& pair : table[index]) {
-        if (pair.first == key) {
-            return pair.second;  // Return the existing value
+    int index = hashFunction(key);
+    Node<K, V>* current = table[index];
+
+    while (current != nullptr) {
+        if (current->key == key) {
+            return current->value;
         }
+        current = current->next;
     }
-    // Key does not exist, so insert with default value
-    table[index].emplace_back(key, V());
-    return table[index].back().second;
+
+    // Key not found; insert with default value
+    Node<K, V>* newNode = new Node<K, V>{key, V(), table[index]};
+    table[index] = newNode;
+    return table[index]->value;
 }
 
 //==============================================================
@@ -103,12 +137,16 @@ V& HashMap<K, V>::operator[](const K& key) {
 //               the key is not found
 //==============================================================
 template <typename K, typename V>
-std::pair<K, V>* HashMap<K, V>::search(const K& key) {
-    size_t index = hashFunction(key);
-    for (auto& pair : table[index]) {
-        if (pair.first == key) {
-            return &pair;  // Return a pointer to the pair
+Node<K, V>* HashMap<K, V>::search(const K& key) {
+    int index = hashFunction(key);
+    Node<K, V>* current = table[index];
+
+    while (current != nullptr) {
+        if (current->key == key) {
+            return current;
         }
+        current = current->next;
     }
+
     return nullptr;  // Key not found
 }
