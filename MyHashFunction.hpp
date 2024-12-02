@@ -3,7 +3,7 @@
 // Class: CS 271-01
 // Date: 11/21/2024
 // About: HashMap.hpp contains the declarations for the
-// MyHasFunction
+// MyHashFunction
 //==============================================================
 
 #ifndef MyHashFunction_HPP
