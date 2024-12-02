@@ -9,6 +9,9 @@
 // Author: Tri Dang
 // Description: Initializes an empty Red-Black Tree.
 //==============================================================
+template <typename K, typename V>
+Set<K, V>::Set(){
+}
 
 
 //==============================================================
@@ -16,21 +19,30 @@
 // Author: Tri Dang
 // Description: Initializes an empty Red-Black Tree.
 //==============================================================
-
+template <typename K, typename V>
+Set<K, V>::Set(const Set<K, V>& otherSet){
+    hash_set = otherSet.hash_set;
+}
 
 //==============================================================
 // Destructor
 // Author: Tri Dang
 // Description: Initializes an empty Red-Black Tree.
 //==============================================================
-
+template <typename K, typename V>
+Set<K, V>::~Set(){
+}
 
 //==============================================================
 // Operator=
 // Author: Tri Dang
 // Description: Initializes an empty Red-Black Tree.
 //==============================================================
-
+template <typename K, typename V>
+Set<K, V> Set<K, V>::operator=(const Set<K, V>& otherSet){
+    hash_set = otherSet.hash_set;
+    return *this;
+}
 
 //==============================================================
 // Search
