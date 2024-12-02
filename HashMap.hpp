@@ -10,7 +10,7 @@
 #ifndef HASHMAP_HPP
 #define HASHMAP_HPP
 
-#include "HashFunction.hpp"
+#include "MyHashFunction.cpp"
 #include <cstddef>  // For size_t
 
 template <typename K, typename V>
@@ -25,7 +25,7 @@ class HashMap {
 private:
     size_t table_size;  // Number of buckets
     Node<K, V>** table;  // Array of pointers to linked lists
-    HashFunction hash_function;  // Hash function instance
+    MyHashFunction<K> hash_function;  // Hash function instance
 
 public:
     HashMap(std::size_t size);  // Constructor

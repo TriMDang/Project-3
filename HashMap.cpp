@@ -49,7 +49,7 @@ HashMap<K, V>::~HashMap() {
 //==============================================================
 template <typename K, typename V>
 void HashMap<K, V>::insert(const K& key, const V& value) {
-    int index = hash_function.hash(key);  // Use the hash function instance
+    int index = hash_function.getHash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
 
     while (current != nullptr) {
@@ -75,7 +75,7 @@ void HashMap<K, V>::insert(const K& key, const V& value) {
 //==============================================================
 template <typename K, typename V>
 void HashMap<K, V>::remove(const K& key) {
-    int index = hash_function.hash(key);  // Use the hash function instance
+    int index = hash_function.getHash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
     Node<K, V>* prev = nullptr;
 
@@ -105,7 +105,7 @@ void HashMap<K, V>::remove(const K& key) {
 //==============================================================
 template <typename K, typename V>
 V& HashMap<K, V>::operator[](const K& key) {
-    int index = hash_function.hash(key);  // Use the hash function instance
+    int index = hash_function.getHash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
 
     while (current != nullptr) {
@@ -133,7 +133,7 @@ V& HashMap<K, V>::operator[](const K& key) {
 //==============================================================
 template <typename K, typename V>
 Node<K, V>* HashMap<K, V>::search(const K& key) {
-    int index = hash_function.hash(key);  // Use the hash function instance
+    int index = hash_function.getHash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
 
     while (current != nullptr) {
