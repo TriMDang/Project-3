@@ -12,6 +12,7 @@
 
 #include "MyHashFunction.cpp"
 #include <cstddef>  // For size_t
+using namespace std;
 
 template <typename K, typename V>
 struct Node {
@@ -28,7 +29,7 @@ private:
     MyHashFunction<K> hash_function;  // Hash function instance
 
 public:
-    HashMap(std::size_t size);  // Constructor
+    HashMap(size_t size);  // Constructor
     ~HashMap();  // Destructor
     HashMap(const HashMap<K, V>& otherMap);
     HashMap<K, V>& operator=(const HashMap<K, V>& otherMap);

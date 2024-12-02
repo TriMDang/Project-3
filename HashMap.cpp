@@ -9,6 +9,8 @@
 
 #include "HashMap.hpp"
 #include <stdexcept>
+#include "customexceptions.hpp"
+using namespace std;
 
 //==============================================================
 // Constructor
@@ -16,9 +18,9 @@
 // PARAMETERS: size - the number of buckets in the hash table
 //==============================================================
 template <typename K, typename V>
-HashMap<K, V>::HashMap(std::size_t size) : table_size(size), hash_function(26544, size) {
+HashMap<K, V>::HashMap(size_t size) : table_size(size), hash_function(26544, size) {
     table = new Node<K, V>*[table_size];
-    for (std::size_t i = 0; i < table_size; i++) {
+    for (size_t i = 0; i < table_size; i++) {
         table[i] = nullptr;  // Initialize all buckets to null
     }
 }
@@ -128,7 +130,7 @@ void HashMap<K, V>::remove(const K& key) {
         current = current->next;
     }
 
-    throw std::runtime_error("Key not found");
+    throw ValueNotInTreeException();
 }
 
 //==============================================================
@@ -189,7 +191,7 @@ Node<K, V>* HashMap<K, V>::search(const K& key) {
 //==============================================================
 template <typename K, typename V>
 void HashMap<K, V>::clear(){
-    for (std::size_t i = 0; i < table_size; i++) {
+    for (size_t i = 0; i < table_size; i++) {
         Node<K, V>* current = table[i];
         while (current != nullptr) {
             Node<K, V>* temp = current;
