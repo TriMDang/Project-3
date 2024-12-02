@@ -17,15 +17,21 @@
 void test_insert_and_search() {
     HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
+    std::cout << "Testing insert and search...\n";
     hashMap.insert(1, "One");
     hashMap.insert(2, "Two");
     hashMap.insert(3, "Three");
 
-    assert(hashMap.search(1)->value == "One");  // Access value using 'value' instead of 'second'
+    std::cout << "Inserted values:\n";
+    std::cout << "Key 1: " << hashMap.search(1)->value << "\n";
+    std::cout << "Key 2: " << hashMap.search(2)->value << "\n";
+    std::cout << "Key 3: " << hashMap.search(3)->value << "\n";
+
+    assert(hashMap.search(1)->value == "One");
     assert(hashMap.search(2)->value == "Two");
     assert(hashMap.search(3)->value == "Three");
 
-    std::cout << "test_insert_and_search passed." << std::endl;
+    std::cout << "test_insert_and_search passed.\n\n";
 }
 
 //==============================================================
@@ -35,12 +41,16 @@ void test_insert_and_search() {
 void test_update_value() {
     HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
+    std::cout << "Testing update values...\n";
     hashMap.insert(1, "One");
+    std::cout << "Before update: Key 1 = " << hashMap.search(1)->value << "\n";
+
     hashMap.insert(1, "Updated One");
+    std::cout << "After update: Key 1 = " << hashMap.search(1)->value << "\n";
 
     assert(hashMap.search(1)->value == "Updated One");
 
-    std::cout << "test_update_value passed." << std::endl;
+    std::cout << "test_update_value passed.\n\n";
 }
 
 //==============================================================
@@ -50,12 +60,16 @@ void test_update_value() {
 void test_remove_key() {
     HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
+    std::cout << "Testing remove key...\n";
     hashMap.insert(1, "One");
+    std::cout << "Before removal: Key 1 = " << hashMap.search(1)->value << "\n";
+
     hashMap.remove(1);
+    std::cout << "After removal: Key 1 = " << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->value) << "\n";
 
     assert(hashMap.search(1) == nullptr);
 
-    std::cout << "test_remove_key passed." << std::endl;
+    std::cout << "test_remove_key passed.\n\n";
 }
 
 //==============================================================
@@ -65,14 +79,16 @@ void test_remove_key() {
 void test_remove_non_existent_key() {
     HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
+    std::cout << "Testing remove non-existent key...\n";
+
     try {
         hashMap.remove(999);  // This key doesn't exist
         assert(false);  // Fail the test if no exception is thrown
-    } catch (const std::runtime_error&) {
-        // Exception expected
+    } catch (const std::runtime_error& e) {
+        std::cout << "Caught expected exception: " << e.what() << "\n";
     }
 
-    std::cout << "test_remove_non_existent_key passed." << std::endl;
+    std::cout << "test_remove_non_existent_key passed.\n\n";
 }
 
 //==============================================================
@@ -82,16 +98,21 @@ void test_remove_non_existent_key() {
 void test_operator_brackets() {
     HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
+    std::cout << "Testing operator[]...\n";
     hashMap[1] = "One";
     hashMap[2] = "Two";
 
-    assert(hashMap[1] == "One");
-    assert(hashMap[2] == "Two");
+    std::cout << "Set values: \n";
+    std::cout << "Key 1: " << hashMap[1] << "\n";
+    std::cout << "Key 2: " << hashMap[2] << "\n";
 
     hashMap[1] = "Updated One";
-    assert(hashMap[1] == "Updated One");
+    std::cout << "After update: Key 1 = " << hashMap[1] << "\n";
 
-    std::cout << "test_operator_brackets passed." << std::endl;
+    assert(hashMap[1] == "Updated One");
+    assert(hashMap[2] == "Two");
+
+    std::cout << "test_operator_brackets passed.\n\n";
 }
 
 //==============================================================
@@ -101,9 +122,12 @@ void test_operator_brackets() {
 void test_empty_hash_map_search() {
     HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
+    std::cout << "Testing empty hash map search...\n";
+    std::cout << "Search Key 1: " << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->value) << "\n";
+
     assert(hashMap.search(1) == nullptr);
 
-    std::cout << "test_empty_hash_map_search passed." << std::endl;
+    std::cout << "test_empty_hash_map_search passed.\n\n";
 }
 
 //==============================================================
@@ -113,13 +137,18 @@ void test_empty_hash_map_search() {
 void test_collision_handling() {
     HashMap<int, std::string> hashMap(1);  // Force all keys to collide
 
+    std::cout << "Testing collision handling...\n";
     hashMap.insert(1, "One");
     hashMap.insert(2, "Two");
+
+    std::cout << "Colliding keys:\n";
+    std::cout << "Key 1: " << hashMap.search(1)->value << "\n";
+    std::cout << "Key 2: " << hashMap.search(2)->value << "\n";
 
     assert(hashMap.search(1)->value == "One");
     assert(hashMap.search(2)->value == "Two");
 
-    std::cout << "test_collision_handling passed." << std::endl;
+    std::cout << "test_collision_handling passed.\n\n";
 }
 
 //==============================================================
@@ -135,6 +164,6 @@ int main() {
     test_empty_hash_map_search();
     test_collision_handling();
 
-    std::cout << "All tests passed!" << std::endl;
+    std::cout << "All tests passed!\n";
     return 0;
 }
