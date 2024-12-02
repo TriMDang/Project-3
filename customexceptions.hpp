@@ -34,7 +34,7 @@ class EmptyTreeException: public exception{
 class ValueNotInTreeException: public exception{
     public:
         const char* what() const noexcept override{
-            return "Operation failed: Specified value was not found in tree.";
+            return "Operation failed: Specified value was not found.";
         }
 };
 
@@ -48,5 +48,18 @@ class EmptyHashTable: public exception{
     public:
         const char* what() const noexcept override{
             return "Operation failed: The table is empty.";
+        }
+};
+
+//==================================================================================
+// Empty Hash table
+// Author: Tri Dang
+// Description: Made for set. Throws error if value exited.
+//==================================================================================
+
+class ValueExisted: public exception{
+    public:
+        const char* what() const noexcept override{
+            return "Operation failed: The value already exist.";
         }
 };

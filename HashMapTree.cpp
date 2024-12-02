@@ -5,6 +5,7 @@
 // About: 
 //==============================================================
 #include "HashMapTree.hpp"
+#include "customexceptions.hpp"
 
 // Constructor
 template <typename K, typename V>
@@ -66,7 +67,7 @@ void HashMapTree<K, V>::remove(const K& key) {
     if (table[index].remove(key)) {  // Assume RBTree remove returns a boolean for success
         --num_elements;  // Decrement the number of elements
     } else {
-        throw std::invalid_argument("Key not found for removal");
+        throw ValueNotInTreeException();
     }
 }
 
@@ -78,7 +79,7 @@ V& HashMapTree<K, V>::operator[](const K& key) {
     if (node != nullptr) {
         return node->data.second;  // Return reference to the value
     }
-    throw std::out_of_range("Key not found in HashMapTree");
+    throw ValueNotInTreeException();
 }
 
 // Search Method
