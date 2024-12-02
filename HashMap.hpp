@@ -3,13 +3,15 @@
 // Class: CS 271-01
 // Date: 11/21/2024
 // About: HashMap.hpp contains the declarations for the
-// HashMap class
+// HashMap class, which implements a hash table using chaining
+// and the multiplication method for hashing keys.
 //==============================================================
 
 #ifndef HASHMAP_HPP
 #define HASHMAP_HPP
 
-#include <iostream>
+#include "HashFunction.cpp"
+#include <cstddef>  // For size_t
 
 template <typename K, typename V>
 struct Node {
@@ -21,13 +23,12 @@ struct Node {
 template <typename K, typename V>
 class HashMap {
 private:
-    size_t table_size;  // Number of buckets in the hash table
+    size_t table_size;  // Number of buckets
     Node<K, V>** table;  // Array of pointers to linked lists
-
-    int hashFunction(const K& key) const;  // Computes hash index for a key
+    HashFunction hash_function;  // Hash function instance
 
 public:
-    HashMap(size_t size);  // Constructor
+    HashMap(std::size_t size);  // Constructor
     ~HashMap();  // Destructor
 
     void insert(const K& key, const V& value);  // Insert a key-value pair
