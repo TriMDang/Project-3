@@ -10,7 +10,7 @@
 #ifndef HASHMAP_HPP
 #define HASHMAP_HPP
 
-#include "HashFunction.cpp"
+#include "HashFunction.hpp"
 #include <cstddef>  // For size_t
 
 template <typename K, typename V>
