@@ -157,28 +157,30 @@ void test_collision_handling() {
 // Set Constructing test
 // Test if set is properly constructed with the hash map class object. Insert will be used to test hashMap
 //==============================================================
-// void SetConstructing(){
-//     cout << "constructing a set named setter with size 5" << endl;
-//     Set<int, int> setter;
-//     setter.hash_set(5);
-//     setter.insert(1, 2);
-//     cout << "inserting 2 into key 1";
-//     cout << "searching for 2...does 2 exist: " << setter.search(2) << endl;
-//     cout << "Set Constructor test finished." << endl;
-// }
+void SetConstructing(){
+    cout << "constructing a set named setter with size 5" << endl;
+    Set<int, int> setter(5);
+    setter.insert(2);
+    cout << "inserting 2..." << endl;
+    cout << "searching for 2...does 2 exist? " << setter.setSearch(2) << endl;
+    cout << "Set Constructor test finished." << endl;
+}
 
 //==============================================================
 // Set copy constructor
 // Test constructing a copied set. 
 //==============================================================
-// void MakeCopySet(){
-//     cout << "Constructing dataset with size 2..." << endl;
-//     Set<int, string> dataset;
-//     dataset.hash_set<>
-//     dataset.hash_set(2); // I think dataset MUST be defined since both hash_set and set is templated
-//     dataset.insert(2, "Twofaced");
-//     cout << "Set Copy constructer test finished." << endl;
-//}
+void MakeCopySet(){
+    cout << "Constructing dataset with size 2..." << endl;
+    Set<int, int> dataset(10);
+    dataset.insert(5);
+    dataset.insert(10);
+    dataset.insert(4);
+    dataset.insert(16);
+    cout << "inserting 5, 10 , 4, 16" << endl;
+    cout << "searching for '4': " << dataset.setSearch(4) << "expected outcome: True" << endl;
+    cout << "Set Copy constructer test finished." << endl;
+}
 
 //==============================================================
 // 
@@ -201,8 +203,9 @@ int main() {
 
     cout << "All Hash Map tests passed!\n\n";
 
-    cout << "Initializing Set (HashMap) tests..." << endl;
-    //SetConstructing();
+    cout << "Initializing Set (HashMap) tests..." << endl << endl;
+    SetConstructing();
+    MakeCopySet();
 
 
     return 0;

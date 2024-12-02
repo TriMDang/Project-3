@@ -38,7 +38,7 @@ public:
     void insert(const K& key, const V& value);  // Insert a key-value pair
     void remove(const K& key);  // Remove a key-value pair
     V& operator[](const K& key);  // Access value by key
-    Node<K, V>* search(const K& key);  // Search for a key-value pair
+    Node<K, V>* search(const K& key) const;  // Search for a key-value pair
     void clear();
 };
 

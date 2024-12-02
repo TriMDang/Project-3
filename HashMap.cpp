@@ -169,7 +169,7 @@ V& HashMap<K, V>::operator[](const K& key) {
 //               the key is not found
 //==============================================================
 template <typename K, typename V>
-Node<K, V>* HashMap<K, V>::search(const K& key) {
+Node<K, V>* HashMap<K, V>::search(const K& key) const {
     int index = hash_function.getHash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
 
