@@ -1,3 +1,11 @@
+//==============================================================
+// Names: Aisha Barry
+// Class: CS 271-01
+// Date: 12/02/2024
+// About: performance.cpp sumulates an analysis of the runtime
+// of hashMap with deletion, insertions and searches
+//==============================================================
+
 #include <iostream>
 #include <fstream>
 #include <ctime>  // For time measurement using clock()
