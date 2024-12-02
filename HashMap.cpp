@@ -11,7 +11,7 @@
 #include "HashFunction.cpp"
 
 //==============================================================
-// HashMap (constructor)
+// Constructor
 // Constructs a hash map with a specified number of buckets.
 // PARAMETERS: size - the number of buckets in the hash table
 //==============================================================
@@ -25,7 +25,7 @@ HashMap<K, V>::HashMap(size_t size) {
 }
 
 //==============================================================
-// ~HashMap (destructor)
+// Destructor
 // Destructor that clears and deallocates the hash table.
 //==============================================================
 template <typename K, typename V>
