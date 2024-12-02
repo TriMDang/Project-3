@@ -4,7 +4,7 @@
 // Date: 11/21/2024
 // About: HashFunction.hpp contains the declaration for the
 // HashFunction class, which implements the multiplication
-// method for hashing keys using simple coding techniques.
+// method for hashing keys.
 //==============================================================
 
 #ifndef HASHFUNCTION_HPP
