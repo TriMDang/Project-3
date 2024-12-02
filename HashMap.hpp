@@ -3,36 +3,37 @@
 // Class: CS 271-01
 // Date: 11/21/2024
 // About: HashMap.hpp contains the declarations for the
-// HashMap class, which implements a hash table with chaining
-// for conflict resolution.
+// HashMap class
 //==============================================================
 
 #ifndef HASHMAP_HPP
 #define HASHMAP_HPP
 
-#include <vector>
-#include <list>
-#include <utility>
-#include <stdexcept>
+#include <iostream>
+
+template <typename K, typename V>
+struct Node {
+    K key;
+    V value;
+    Node* next;
+};
 
 template <typename K, typename V>
 class HashMap {
 private:
     size_t table_size;  // Number of buckets in the hash table
-    std::vector<std::list<std::pair<K, V> > > table;  // Hash table as a vector of lists
+    Node<K, V>** table;  // Array of pointers to linked lists
 
-    size_t hashFunction(const K& key) const;  // Computes the hash index for a given key
+    int hashFunction(const K& key) const;  // Computes hash index for a key
 
 public:
-    HashMap(size_t size = 100);  // Constructor
+    HashMap(size_t size);  // Constructor
     ~HashMap();  // Destructor
 
-    void insert(const K& key, const V& value);  // Inserts a key-value pair
-    void remove(const K& key);  // Removes a key-value pair
-    V& operator[](const K& key);  // Retrieves or modifies a value by key
-    std::pair<K, V>* search(const K& key);  // Searches for a key-value pair
+    void insert(const K& key, const V& value);  // Insert a key-value pair
+    void remove(const K& key);  // Remove a key-value pair
+    V& operator[](const K& key);  // Access value by key
+    Node<K, V>* search(const K& key);  // Search for a key-value pair
 };
-
-#include "HashMap.cpp"
 
 #endif // HASHMAP_HPP
