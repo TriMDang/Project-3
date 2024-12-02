@@ -8,22 +8,22 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
-#include "HashMap.hpp"
+#include "HashMap.cpp"
 
 //==============================================================
 // Test inserting and searching keys
 // Ensures that keys can be inserted and then found in the map.
 //==============================================================
 void test_insert_and_search() {
-    HashMap<int, std::string> hashMap;
+    HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
     hashMap.insert(1, "One");
     hashMap.insert(2, "Two");
     hashMap.insert(3, "Three");
 
-    assert(hashMap.search(1)->second == "One");
-    assert(hashMap.search(2)->second == "Two");
-    assert(hashMap.search(3)->second == "Three");
+    assert(hashMap.search(1)->value == "One");  // Access value using 'value' instead of 'second'
+    assert(hashMap.search(2)->value == "Two");
+    assert(hashMap.search(3)->value == "Three");
 
     std::cout << "test_insert_and_search passed." << std::endl;
 }
@@ -33,12 +33,12 @@ void test_insert_and_search() {
 // Ensures that inserting an existing key updates its value.
 //==============================================================
 void test_update_value() {
-    HashMap<int, std::string> hashMap;
+    HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
     hashMap.insert(1, "One");
     hashMap.insert(1, "Updated One");
 
-    assert(hashMap.search(1)->second == "Updated One");
+    assert(hashMap.search(1)->value == "Updated One");
 
     std::cout << "test_update_value passed." << std::endl;
 }
@@ -48,7 +48,7 @@ void test_update_value() {
 // Ensures that keys can be removed and are no longer searchable.
 //==============================================================
 void test_remove_key() {
-    HashMap<int, std::string> hashMap;
+    HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
     hashMap.insert(1, "One");
     hashMap.remove(1);
@@ -63,7 +63,7 @@ void test_remove_key() {
 // Ensures that removing a key that doesn't exist throws an exception.
 //==============================================================
 void test_remove_non_existent_key() {
-    HashMap<int, std::string> hashMap;
+    HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
     try {
         hashMap.remove(999);  // This key doesn't exist
@@ -80,7 +80,7 @@ void test_remove_non_existent_key() {
 // Ensures that operator[] retrieves and sets values correctly.
 //==============================================================
 void test_operator_brackets() {
-    HashMap<int, std::string> hashMap;
+    HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
     hashMap[1] = "One";
     hashMap[2] = "Two";
@@ -99,7 +99,7 @@ void test_operator_brackets() {
 // Ensures that searching in an empty hash map returns nullptr.
 //==============================================================
 void test_empty_hash_map_search() {
-    HashMap<int, std::string> hashMap;
+    HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
     assert(hashMap.search(1) == nullptr);
 
@@ -116,8 +116,8 @@ void test_collision_handling() {
     hashMap.insert(1, "One");
     hashMap.insert(2, "Two");
 
-    assert(hashMap.search(1)->second == "One");
-    assert(hashMap.search(2)->second == "Two");
+    assert(hashMap.search(1)->value == "One");
+    assert(hashMap.search(2)->value == "Two");
 
     std::cout << "test_collision_handling passed." << std::endl;
 }
