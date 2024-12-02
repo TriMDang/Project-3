@@ -1,3 +1,13 @@
+//==============================================================
+// Names: Aisha Barry, Tri Dang, Andrew Nguyen
+// Class: CS 271-01
+// Date: 11/21/2024
+// About: MyHashFunction.cpp contains the implementations for the
+// MyHashFunction class, including the copy, destructor and
+// constructors and implementing the hash function using the
+// multiple method.
+//==============================================================
+
 #include "MyHashFunction.hpp"
 
 //==============================================================
