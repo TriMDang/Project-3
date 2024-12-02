@@ -295,6 +295,7 @@ void RBTree<K, V>::rightRotation(RBTreeNode<K, V>* centerNode) {
 //==============================================================
 template <typename K, typename V>
 void RBTree<K, V>::removeFixup(RBTreeNode<K, V>* node) {
+    if (node != nullptr){
     while (node != root && node->color == false) {  // Node is black
         if (node == node->parent->left) {
             RBTreeNode<K, V>* sibling = node->parent->right;
@@ -347,6 +348,7 @@ void RBTree<K, V>::removeFixup(RBTreeNode<K, V>* node) {
         }
     }
     node->color = false;  // Ensure the root is black
+    }
 }
 
 //==============================================================

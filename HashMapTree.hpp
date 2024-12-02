@@ -36,5 +36,4 @@ public:
     bool empty() const;  // Checks if the table is empty
 };
 
-#include "HashMapTree.cpp" // Include implementation for template class
 #endif // HASHMAPTREE_HPP
