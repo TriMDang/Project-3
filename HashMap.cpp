@@ -16,7 +16,7 @@
 // PARAMETERS: size - the number of buckets in the hash table
 //==============================================================
 template <typename K, typename V>
-HashMap<K, V>::HashMap(std::size_t size) : table_size(size), hash_function(26544, size) {
+HashMap<K, V>::HashMap(std::size_t size) : table_size(size), hash_function(size) {
     table = new Node<K, V>*[table_size];
     for (std::size_t i = 0; i < table_size; i++) {
         table[i] = nullptr;  // Initialize all buckets to null
@@ -52,9 +52,10 @@ void HashMap<K, V>::insert(const K& key, const V& value) {
     int index = hash_function.getHash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
 
+    // Check if the key already exists
     while (current != nullptr) {
-        if (current->key == key) {  // Key already exists
-            current->value = value;  // Update value
+        if (current->data.first == key) {  // Key found
+            current->data.second = value;  // Update value
             return;
         }
         current = current->next;
@@ -62,11 +63,16 @@ void HashMap<K, V>::insert(const K& key, const V& value) {
 
     // Key not found; insert at the beginning of the list
     Node<K, V>* newNode = new Node<K, V>();
-    newNode->key = key;
-    newNode->value = value;
+    newNode->data = std::make_pair(key, value);
     newNode->next = table[index];
-    table[index] = newNode;
+    newNode->prev = nullptr;
+
+    if (table[index] != nullptr) {
+        table[index]->prev = newNode;  // Update the previous head's prev pointer
+    }
+    table[index] = newNode;  // Set the new node as the head of the list
 }
+
 
 //==============================================================
 // remove
@@ -77,25 +83,26 @@ template <typename K, typename V>
 void HashMap<K, V>::remove(const K& key) {
     int index = hash_function.getHash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
-    Node<K, V>* prev = nullptr;
 
     while (current != nullptr) {
-        if (current->key == key) {
-            if (prev == nullptr) {  // Node to remove is the head
-                table[index] = current->next;
+        if (current->data.first == key) {  // Key found
+            if (current->prev != nullptr) {
+                current->prev->next = current->next;  // Update previous node's next
             } else {
-                prev->next = current->next;
+                table[index] = current->next;  // Update head if needed
+            }
+            if (current->next != nullptr) {
+                current->next->prev = current->prev;  // Update next node's prev
             }
             delete current;
             return;
         }
-        prev = current;
         current = current->next;
-    
+    }
 
     throw std::runtime_error("Key not found");
 }
-}
+
 
 //==============================================================
 // operator[]
@@ -106,24 +113,29 @@ void HashMap<K, V>::remove(const K& key) {
 //==============================================================
 template <typename K, typename V>
 V& HashMap<K, V>::operator[](const K& key) {
-    int index = hash_function.getHash(key);  // Use the hash function instance
+    int index = hash_function.getHash(key);
     Node<K, V>* current = table[index];
 
     while (current != nullptr) {
-        if (current->key == key) {
-            return current->value;
+        if (current->data.first == key) {
+            return current->data.second;  // Return the value if key exists
         }
         current = current->next;
     }
 
     // Key not found; insert with default value
     Node<K, V>* newNode = new Node<K, V>();
-    newNode->key = key;
-    newNode->value = V();  // Default value
+    newNode->data = std::make_pair(key, V());  // Default value for V
     newNode->next = table[index];
-    table[index] = newNode;
-    return table[index]->value;
+    newNode->prev = nullptr;
+
+    if (table[index] != nullptr) {
+        table[index]->prev = newNode;  // Update the previous head's prev pointer
+    }
+    table[index] = newNode;  // Set the new node as the head of the list
+    return table[index]->data.second;
 }
+
 
 //==============================================================
 // search
@@ -138,7 +150,7 @@ Node<K, V>* HashMap<K, V>::search(const K& key) {
     Node<K, V>* current = table[index];
 
     while (current != nullptr) {
-        if (current->key == key) {
+        if (current->data.first == key) {  // Match the key part of the pair
             return current;
         }
         current = current->next;

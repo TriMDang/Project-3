@@ -1,4 +1,5 @@
 #include "MyHashFunction.hpp"
+#include <random>
 
 //==============================================================
 // Constructor
@@ -8,8 +9,14 @@
 // - table_size: the number of buckets (m)
 //==============================================================
 template <typename K>
-MyHashFunction<K>::MyHashFunction(long constant_k, size_t table_size)
-    : k(constant_k), m(table_size) {}
+MyHashFunction<K>::MyHashFunction(size_t table_size)
+    : m(table_size) {
+    // Generate a random double in the range [0, 1)
+    std::random_device rd;                                // Seed
+    std::mt19937 generator(rd());                        // Random number engine
+    std::uniform_real_distribution<double> dist(0.0, 1.0); // Distribution range [0, 1)
+    k = dist(generator);                                 // Assign random k
+}
 
 //==============================================================
 // Destructor
@@ -57,7 +64,7 @@ MyHashFunction<K>& MyHashFunction<K>::operator=(const MyHashFunction<K>& other) 
 template <typename K>
 int MyHashFunction<K>::getHash(const K& key) const {
     static_assert(std::is_arithmetic<K>::value, "Key type must be numeric");
-    double product = key * (k / 100000.0);  // Scale k to simulate a constant < 1
-    double fractional_part = product - static_cast<long>(product);  // Extract fractional part
-    return static_cast<int>(m * fractional_part);  // Multiply by m and truncate
+    double product = key * k;                            // Multiply key by k
+    double fractional_part = product - static_cast<long>(product); // Extract fractional part
+    return static_cast<int>(m * fractional_part);        // Scale to table size
 }

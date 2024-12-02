@@ -8,7 +8,7 @@
 #define HASHMAPTREE_HPP
 
 #include "RBTree.cpp"
-#include "MyHashFunction.cpp"
+//#include "MyHashFunction.cpp"
 
 
 template <typename K, typename V>

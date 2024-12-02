@@ -14,7 +14,7 @@ private:
 
 public:
     // Constructor
-    MyHashFunction(long constant_k, size_t table_size);
+    MyHashFunction(size_t table_size);
 
     // Destructor
     ~MyHashFunction();

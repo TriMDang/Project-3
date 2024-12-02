@@ -24,13 +24,13 @@ void test_insert_and_search() {
     hashMap.insert(3, "Three");
 
     std::cout << "Inserted values:\n";
-    std::cout << "Key 1: " << hashMap.search(1)->value << "\n";
-    std::cout << "Key 2: " << hashMap.search(2)->value << "\n";
-    std::cout << "Key 3: " << hashMap.search(3)->value << "\n";
+    std::cout << "Key 1: " << hashMap.search(1)->data.second << "\n";
+    std::cout << "Key 2: " << hashMap.search(2)->data.second << "\n";
+    std::cout << "Key 3: " << hashMap.search(3)->data.second << "\n";
 
-    assert(hashMap.search(1)->value == "One");
-    assert(hashMap.search(2)->value == "Two");
-    assert(hashMap.search(3)->value == "Three");
+    assert(hashMap.search(1)->data.second == "One");
+    assert(hashMap.search(2)->data.second == "Two");
+    assert(hashMap.search(3)->data.second == "Three");
 
     std::cout << "test_insert_and_search passed.\n\n";
 }
@@ -44,12 +44,12 @@ void test_update_value() {
 
     std::cout << "Testing update values...\n";
     hashMap.insert(1, "One");
-    std::cout << "Before update: Key 1 = " << hashMap.search(1)->value << "\n";
+    std::cout << "Before update: Key 1 = " << hashMap.search(1)->data.second << "\n";
 
     hashMap.insert(1, "Updated One");
-    std::cout << "After update: Key 1 = " << hashMap.search(1)->value << "\n";
+    std::cout << "After update: Key 1 = " << hashMap.search(1)->data.second << "\n";
 
-    assert(hashMap.search(1)->value == "Updated One");
+    assert(hashMap.search(1)->data.second == "Updated One");
 
     std::cout << "test_update_value passed.\n\n";
 }
@@ -63,10 +63,11 @@ void test_remove_key() {
 
     std::cout << "Testing remove key...\n";
     hashMap.insert(1, "One");
-    std::cout << "Before removal: Key 1 = " << hashMap.search(1)->value << "\n";
+    std::cout << "Before removal: Key 1 = " << hashMap.search(1)->data.second << "\n";
 
     hashMap.remove(1);
-    std::cout << "After removal: Key 1 = " << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->value) << "\n";
+    std::cout << "After removal: Key 1 = " 
+              << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->data.second) << "\n";
 
     assert(hashMap.search(1) == nullptr);
 
@@ -124,7 +125,8 @@ void test_empty_hash_map_search() {
     HashMap<int, std::string> hashMap(10);  // Provide the size argument
 
     std::cout << "Testing empty hash map search...\n";
-    std::cout << "Search Key 1: " << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->value) << "\n";
+    std::cout << "Search Key 1: " 
+              << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->data.second) << "\n";
 
     assert(hashMap.search(1) == nullptr);
 
@@ -143,11 +145,11 @@ void test_collision_handling() {
     hashMap.insert(2, "Two");
 
     std::cout << "Colliding keys:\n";
-    std::cout << "Key 1: " << hashMap.search(1)->value << "\n";
-    std::cout << "Key 2: " << hashMap.search(2)->value << "\n";
+    std::cout << "Key 1: " << hashMap.search(1)->data.second << "\n";
+    std::cout << "Key 2: " << hashMap.search(2)->data.second << "\n";
 
-    assert(hashMap.search(1)->value == "One");
-    assert(hashMap.search(2)->value == "Two");
+    assert(hashMap.search(1)->data.second == "One");
+    assert(hashMap.search(2)->data.second == "Two");
 
     std::cout << "test_collision_handling passed.\n\n";
 }

@@ -77,7 +77,7 @@ template <typename K, typename V>
 void HashMapTree<K, V>::remove(RBTreeNode<std::pair<K, V> >* element) {
     if (element != nullptr) {
         uint64_t index = hash_function.getHash(element->data.first);
-        table[index]->remove(element);
+        table[index]->remove(element->data);
         --num_elements;
     }
 }
