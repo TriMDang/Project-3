@@ -4,11 +4,11 @@
 // Date: 11/21/2024
 // About: HashMap.cpp contains the implementations for the
 // HashMap class, handling insertion, deletion, searching, and
-// retrieval using chaining for conflict resolution.
+// retrieval using chaining and the multiplication method for hashing keys.
 //==============================================================
 
 #include "HashMap.hpp"
-#include "HashFunction.cpp"
+#include <stdexcept>
 
 //==============================================================
 // Constructor
@@ -16,10 +16,9 @@
 // PARAMETERS: size - the number of buckets in the hash table
 //==============================================================
 template <typename K, typename V>
-HashMap<K, V>::HashMap(size_t size) {
-    table_size = size;
+HashMap<K, V>::HashMap(std::size_t size) : table_size(size), hash_function(26544, size) {
     table = new Node<K, V>*[table_size];
-    for (size_t i = 0; i < table_size; i++) {
+    for (std::size_t i = 0; i < table_size; i++) {
         table[i] = nullptr;  // Initialize all buckets to null
     }
 }
@@ -30,7 +29,7 @@ HashMap<K, V>::HashMap(size_t size) {
 //==============================================================
 template <typename K, typename V>
 HashMap<K, V>::~HashMap() {
-    for (size_t i = 0; i < table_size; i++) {
+    for (std::size_t i = 0; i < table_size; i++) {
         Node<K, V>* current = table[i];
         while (current != nullptr) {
             Node<K, V>* temp = current;
@@ -50,7 +49,7 @@ HashMap<K, V>::~HashMap() {
 //==============================================================
 template <typename K, typename V>
 void HashMap<K, V>::insert(const K& key, const V& value) {
-    int index = hashFunction(key);
+    int index = hash_function.hash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
 
     while (current != nullptr) {
@@ -62,7 +61,10 @@ void HashMap<K, V>::insert(const K& key, const V& value) {
     }
 
     // Key not found; insert at the beginning of the list
-    Node<K, V>* newNode = new Node<K, V>{key, value, table[index]};
+    Node<K, V>* newNode = new Node<K, V>();
+    newNode->key = key;
+    newNode->value = value;
+    newNode->next = table[index];
     table[index] = newNode;
 }
 
@@ -73,7 +75,7 @@ void HashMap<K, V>::insert(const K& key, const V& value) {
 //==============================================================
 template <typename K, typename V>
 void HashMap<K, V>::remove(const K& key) {
-    int index = hashFunction(key);
+    int index = hash_function.hash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
     Node<K, V>* prev = nullptr;
 
@@ -103,7 +105,7 @@ void HashMap<K, V>::remove(const K& key) {
 //==============================================================
 template <typename K, typename V>
 V& HashMap<K, V>::operator[](const K& key) {
-    int index = hashFunction(key);
+    int index = hash_function.hash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
 
     while (current != nullptr) {
@@ -114,7 +116,10 @@ V& HashMap<K, V>::operator[](const K& key) {
     }
 
     // Key not found; insert with default value
-    Node<K, V>* newNode = new Node<K, V>{key, V(), table[index]};
+    Node<K, V>* newNode = new Node<K, V>();
+    newNode->key = key;
+    newNode->value = V();  // Default value
+    newNode->next = table[index];
     table[index] = newNode;
     return table[index]->value;
 }
@@ -128,7 +133,7 @@ V& HashMap<K, V>::operator[](const K& key) {
 //==============================================================
 template <typename K, typename V>
 Node<K, V>* HashMap<K, V>::search(const K& key) {
-    int index = hashFunction(key);
+    int index = hash_function.hash(key);  // Use the hash function instance
     Node<K, V>* current = table[index];
 
     while (current != nullptr) {
