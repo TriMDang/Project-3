@@ -39,7 +39,7 @@ Set<K, V>::~Set(){
 // Description: Initializes an empty Red-Black Tree.
 //==============================================================
 template <typename K, typename V>
-Set<K, V> Set<K, V>::operator=(const Set<K, V>& otherSet){
+Set<K, V>& Set<K, V>::operator=(const Set<K, V>& otherSet){
     hash_set = otherSet.hash_set;
     return *this;
 }
@@ -50,7 +50,7 @@ Set<K, V> Set<K, V>::operator=(const Set<K, V>& otherSet){
 // Description: Searches through the hash table to find the value. Return true if value do exist
 //==============================================================
 template <typename K, typename V>
-bool Set<K, V>::search(const K& key){
+bool Set<K, V>::search(const K& key) const{
     if (hash_set.search(key) != nullptr){
         return (true);
     } else{
