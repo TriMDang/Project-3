@@ -30,11 +30,15 @@ private:
 public:
     HashMap(std::size_t size);  // Constructor
     ~HashMap();  // Destructor
+    HashMap(const HashMap<K, V>& otherMap);
+    HashMap<K, V>& operator=(const HashMap<K, V>& otherMap);
+
 
     void insert(const K& key, const V& value);  // Insert a key-value pair
     void remove(const K& key);  // Remove a key-value pair
     V& operator[](const K& key);  // Access value by key
     Node<K, V>* search(const K& key);  // Search for a key-value pair
+    void clear();
 };
 
 #endif // HASHMAP_HPP

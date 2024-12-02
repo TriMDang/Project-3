@@ -29,16 +29,51 @@ HashMap<K, V>::HashMap(std::size_t size) : table_size(size), hash_function(26544
 //==============================================================
 template <typename K, typename V>
 HashMap<K, V>::~HashMap() {
-    for (std::size_t i = 0; i < table_size; i++) {
-        Node<K, V>* current = table[i];
-        while (current != nullptr) {
-            Node<K, V>* temp = current;
-            current = current->next;
-            delete temp;
-        }
-    }
+    clear();
     delete[] table;
 }
+
+
+//==============================================================
+// Copy Constructor
+// Author: Tri Dang
+// Creates a new hash table and deep copies another another table.
+//==============================================================
+template <typename K, typename V>
+HashMap<K, V>::HashMap(const HashMap<K, V>& otherMap){
+    hash_function = otherMap.hash_function;
+    for (size_t i = 0; i < otherMap.table_size; ++i) {
+        Node<K, V>* current = otherMap.table[i];
+        while (current != nullptr) {
+            insert(current->key, current->value);
+            current = current->next;
+        }
+    }
+}
+
+//==============================================================
+// Operator = 
+// Author: Tri Dang
+// Deep copies another hash table.
+//==============================================================
+template <typename K, typename V>
+HashMap<K, V>& HashMap<K, V>::operator=(const HashMap<K, V>& otherMap){
+    if (this == &otherMap) {
+        return *this;  // prevent self reassignment
+    }
+    clear(); 
+    hash_function = otherMap.hash_function;
+
+    for (size_t i = 0; i < otherMap.table_size; ++i) {
+        Node<K, V>* current = otherMap.table[i];
+        while (current != nullptr) {
+            insert(current->key, current->value);
+            current = current->next;
+        }
+    }
+    return *this;
+}
+
 
 //==============================================================
 // insert
@@ -144,4 +179,24 @@ Node<K, V>* HashMap<K, V>::search(const K& key) {
     }
 
     return nullptr;  // Key not found
+}
+
+//==============================================================
+// clear
+// Deletes everything in this table
+// Parameter: none in parenthesis, but the table itself calls it
+// Return: none
+//==============================================================
+template <typename K, typename V>
+void HashMap<K, V>::clear(){
+    for (std::size_t i = 0; i < table_size; i++) {
+        Node<K, V>* current = table[i];
+        while (current != nullptr) {
+            Node<K, V>* temp = current;
+            current = current->next;
+            delete temp;
+        }
+        table[i] = nullptr;
+    }
+    table_size = 0;
 }
