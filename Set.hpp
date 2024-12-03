@@ -6,7 +6,7 @@
 template <typename T>
 class Set {
 private:
-        hashSet<T, T> hashSet;
+        HashMap<T, T> hashSet;
         // unint64_t tableSize;
 
 public:

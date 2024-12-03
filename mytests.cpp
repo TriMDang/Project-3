@@ -8,9 +8,9 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
-#include "HashMap.cpp"
-#include "Set.cpp"
+//#include "HashMap.cpp"
 #include "HashMapTree.cpp"
+#include "Set.cpp"
 using namespace std;
 
 //==============================================================
@@ -281,28 +281,61 @@ void test_collision_handling_HashMapTree() {
 
 
 //==============================================================
+// Set construction
+// Inserting 5 and 10 and searching for 5, 10, and 21 for their outcomes
+//==============================================================
+void setConstruction(){
+    Set<int> setter;
+    cout << "constructing a set called 'setter' that has inserted 5 and 10" << endl;
+    setter.insert(5);
+    cout << "Is 5 in setter? "  << setter.search(5) << endl << "(expected outcome: True)" << endl;
+    setter.insert(10);
+    cout << "Is 10 in setter? " << setter.search(10) << endl << "(expected outcome: True)" << endl;
+    cout << "Is 21 in setter? " << setter.search(21) << endl << "(expected outcome: False)" << endl;
+    cout << "constructing setter completed!" << endl << endl;
+}
+
+//==============================================================
+// Set construction
+// EXPECTS an exception
+//==============================================================
+void setInsertException(){
+    Set<int> setter;
+    cout << "constructing a set called 'datastruct' that has inserted 5." << endl;
+    setter.insert(5);
+    cout << "Is 5 in setter? "  << setter.search(5) << endl << "(expected outcome: True)" << endl << endl << "re-inserting 5 to cause a custom exception" << endl;
+    setter.insert(5);
+}
+
+
+//==============================================================
 // Main function
 // Runs all test cases
+// certain test will be commented out for other test to run.These commented out test are expected to throw an exception.
 //==============================================================
 int main() {
     test_insert_and_search();
     test_update_value();
     test_remove_key();
     //test_remove_non_existent_key();
-    test_operator_brackets();
-    //test_empty_hash_map_search();
+    //test_operator_brackets();
+    test_empty_hash_map_search();
     test_collision_handling();
 
     cout << "All tests passed!\n";
+    cout << "beginning Other test..." << endl << endl;
 
     test_insert_and_search_HashMapTree();
     test_update_value_HashMapTree();
     test_remove_key_HashMapTree();
     //test_remove_non_existent_key_HashMapTree();
-    test_operator_brackets_HashMapTree();
-    //test_empty_HashMapTree_search();
+    //test_operator_brackets_HashMapTree();
+    test_empty_HashMapTree_search();
     test_collision_handling_HashMapTree();
 
     cout << "All tests for HashMapTree passed!\n";
+    cout << endl << endl << "Beginning Set testing..." << endl << endl;
+    setConstruction();
+    //setInsertException();
     return 0;
 }
