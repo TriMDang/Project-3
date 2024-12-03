@@ -10,6 +10,8 @@
 
 #include "RBTreeNode.hpp"
 #include <stdexcept>
+#pragma once
+
 
 template <typename T>
 class RBTree {

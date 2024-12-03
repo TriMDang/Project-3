@@ -1,110 +1,91 @@
+#include <iostream>
 #include "Set.hpp"
+#include "customexceptions.hpp"
+using namespace std;
 
-//==============================================================
-// Constructor
-// Constructs a set with a specified number of buckets.
-// PARAMETERS: size - the number of buckets in the hash table
-//==============================================================
-template <typename T>
-Set<T>::Set(size_t size) : table_size(size), table(size) {}
+// ============================================================
+// Default Constructor.
+// Creates a hashSet with table_size 0
+// Parameter: None.
+// Return: None.
+// ============================================================
+template <class T>
+    Set<T>::Set(size_t table_size) : hashSet(table_size) {}
 
-//==============================================================
-// Destructor
-// Destructor that clears the hash table.
-//==============================================================
-template <typename T>
-Set<T>::~Set() {
-    for (auto& bucket : table) {
-        bucket.clear();
+// ============================================================
+// Copy Constructor.
+// Creates a hashSet and deep copies the other hashSet
+// Parameter:
+//  - other: The Set object to copy from.
+// Return: None.
+// ============================================================
+template <class T>
+    Set<T>::Set(const Set<T> &other) {
+        hashSet(other.hashSet);
     }
-}
 
-//==============================================================
-// hashFunction
-// Computes the hash index for a given value using std::hash.
-// PARAMETERS: value - the value to hash
-// Return value: the computed hash index
-//==============================================================
-template <typename T>
-size_t Set<T>::hashFunction(const T& value) const {
-    return std::hash<T>()(value) % table_size;
-}
+// ============================================================
+// Destructor.
+// Deallocate a set, deleting it
+// Parameter: None.
+// Return: None.
+// ============================================================
+template <class T>
+    Set<T>::~Set() {
+    }
 
-//==============================================================
-// insert
-// Inserts a value into the set. If the value is already in the
-// set, no action is taken.
-// PARAMETERS: value - the value to insert
-//==============================================================
-template <typename T>
-void Set<T>::insert(const T& value) {
-    size_t index = hashFunction(value);
-    for (const auto& element : table[index]) {
-        if (element == value) {
-            return;  // Value already exists, do nothing
+// ============================================================
+// operator=
+// Assign hashSet to other's hashSet using hashSet.cpp operator=
+// Parameter: the other set
+// Return: the set being called
+// ============================================================
+template <class T>
+    Set<T> Set<T>::operator=(const Set<T> &other) {
+        if (this != &other) {
+            hashSet = other.hashSet;
+            // tableSize = other.tableSize;
+        }
+        return (*this);
+    }
+
+// ============================================================
+// Insert Method.
+// Inserts a value into the set, throw exception error if value existed
+// Parameter: value - The value to insert.
+// Return: None.
+// ============================================================
+template <class T>
+    void Set<T>::insert(const T &value) {
+        if (search(value) == true){
+            throw valueExisted();
+        } else{
+            hashSet.insert(value, value); // key can be the value since value must be unique
         }
     }
-    table[index].push_back(value);  // Add the value to the bucket
-}
 
-//==============================================================
-// remove
-// Removes a value from the set. If the value does not exist,
-// throws an exception.
-// PARAMETERS: value - the value to remove
-//==============================================================
-template <typename T>
-void Set<T>::remove(const T& value) {
-    size_t index = hashFunction(value);
-    for (auto it = table[index].begin(); it != table[index].end(); ++it) {
-        if (*it == value) {
-            table[index].erase(it);  // Remove the value from the bucket
-            return;
+// ============================================================
+// Remove Method.
+// Removes a value from the set, throw exception error if value is nonexistent
+// Parameter: value - The value to remove.
+// Return: None.
+// ============================================================
+template <class T>
+    void Set<T>::remove(const T& value) {
+        if (search(value) == true){
+            hashSet.remove(value);
+        } else{
+            throw ValueNotInTreeException();
         }
     }
-    throw std::runtime_error("Key not found in set");
-}
 
-//==============================================================
-// search
-// Checks if a value is in the set.
-// PARAMETERS: value - the value to search for
-// Return value: true if the value is in the set, false otherwise
-//==============================================================
-template <typename T>
-bool Set<T>::search(const T& value) const {
-    size_t index = hashFunction(value);
-    for (const auto& element : table[index]) {
-        if (element == value) {
-            return true;  // Value found
-        }
+// ============================================================
+// Search Method.
+// Searches for a value in the set.
+// Parameter: valueHashMap
+// Return: True if value exist, oterwise false.
+// ============================================================
+template <class T>
+    bool Set<T>::search(const T& value) {
+        return hashSet.search(value) != nullptr;
     }
-    return false;  // Value not found
-}
-
-//==============================================================
-// size
-// Returns the number of elements in the set.
-// PARAMETERS: None
-// Return value: the number of elements in the set
-//==============================================================
-template <typename T>
-size_t Set<T>::size() const {
-    size_t count = 0;
-    for (const auto& bucket : table) {
-        count += bucket.size();
-    }
-    return count;
-}
-
-//==============================================================
-// isEmpty
-// Checks if the set is empty.
-// PARAMETERS: None
-// Return value: true if the set is empty, false otherwise
-//==============================================================
-template <typename T>
-bool Set<T>::isEmpty() const {
-    return size() == 0;
-}
-

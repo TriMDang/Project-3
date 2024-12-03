@@ -7,23 +7,24 @@
 #include "HashMapTree.hpp"
 #include <stdexcept>
 #include "customexceptions.hpp"
+using namespace std;
 
 // Constructor
 template <typename K, typename V>
 HashMapTree<K, V>::HashMapTree(size_t table_size) 
     : table_size(table_size), num_elements(0), hash_function(table_size) {
-    table = new RBTree<std::pair<K, V> >*[table_size];
+    table = new RBTree<pair<K, V> >*[table_size];
     for (size_t i = 0; i < table_size; ++i) {
-        table[i] = new RBTree<std::pair<K, V> >();
+        table[i] = new RBTree<pair<K, V> >();
     }
 }
 
 // Copy Constructor
 template <typename K, typename V>
     HashMapTree<K, V>::HashMapTree(const HashMapTree<K, V>& other) {
-        table = new RBTree<std::pair<K, V> >*[table_size];
+        table = new RBTree<pair<K, V> >*[table_size];
         for (size_t i = 0; i < table_size; ++i) {
-            table[i] = new RBTree<std::pair<K, V> >(*other.table[i]);
+            table[i] = new RBTree<pair<K, V> >(*other.table[i]);
         }
     }
 
@@ -49,9 +50,9 @@ HashMapTree<K, V>& HashMapTree<K, V>::operator=(const HashMapTree<K, V>& other) 
         num_elements = other.num_elements;
         hash_function = other.hash_function;
 
-        table = new RBTree<std::pair<K, V> >*[table_size];
+        table = new RBTree<pair<K, V> >*[table_size];
         for (size_t i = 0; i < table_size; ++i) {
-            table[i] = new RBTree<std::pair<K, V> >(*other.table[i]);
+            table[i] = new RBTree<pair<K, V> >(*other.table[i]);
         }
     }
     return *this;
@@ -61,12 +62,12 @@ HashMapTree<K, V>& HashMapTree<K, V>::operator=(const HashMapTree<K, V>& other) 
 template <typename K, typename V>
 void HashMapTree<K, V>::insert(const K& key, const V& value) {
     uint64_t index = hash_function.getHash(key);
-    RBTreeNode<std::pair<K, V> >* element = search(key);
+    RBTreeNode<pair<K, V> >* element = search(key);
     if (element != nullptr && element->data.first == key) {
         element->data.second = value; 
         return;
     } else {
-        table[index]->insert(std::make_pair(key, value));
+        table[index]->insert(make_pair(key, value));
         ++num_elements;
     }
 
@@ -74,7 +75,7 @@ void HashMapTree<K, V>::insert(const K& key, const V& value) {
 
 // Remove Method
 template <typename K, typename V>
-void HashMapTree<K, V>::remove(RBTreeNode<std::pair<K, V> >* element) {
+void HashMapTree<K, V>::remove(RBTreeNode<pair<K, V> >* element) {
     if (element != nullptr) {
         uint64_t index = hash_function.getHash(element->data.first);
         table[index]->remove(element->data);
@@ -85,9 +86,9 @@ void HashMapTree<K, V>::remove(RBTreeNode<std::pair<K, V> >* element) {
 // Operator[] Method
 template <typename K, typename V>
     V& HashMapTree<K, V>::operator[](const K& key) {
-    RBTreeNode<std::pair<K, V> >* element = search(key);
+    RBTreeNode<pair<K, V> >* element = search(key);
     if (element == nullptr) {
-        throw ValueNotInTreeException();
+        throw key_exception();
     }
         else {
             return element->data.second;
@@ -96,7 +97,7 @@ template <typename K, typename V>
 
 // Search Method
 template <typename K, typename V>
-    RBTreeNode<std::pair<K, V> >* HashMapTree<K, V>::search(const K& key) {
+    RBTreeNode<pair<K, V> >* HashMapTree<K, V>::search(const K& key) {
         uint64_t index = hash_function.getHash(key);
         RBTreeNode< pair<K, V> >* current = table[index]->root;
         

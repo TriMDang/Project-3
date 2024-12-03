@@ -8,7 +8,9 @@
 #define HASHMAPTREE_HPP
 
 #include "RBTree.cpp"
-//#include "MyHashFunction.cpp"
+#include "RBTreeNode.cpp"
+#include "MyHashFunction.hpp"
+using namespace std;
 
 
 template <typename K, typename V>
@@ -16,7 +18,7 @@ class HashMapTree {
     private:
         size_t table_size;
         size_t num_elements;
-        RBTree<std::pair<K, V> >** table;
+        RBTree<pair<K, V> >** table;
         MyHashFunction<K> hash_function;
 
     public:
@@ -30,9 +32,9 @@ class HashMapTree {
 
         // Core Methods
         void                    insert          (const K& key, const V& value);
-        void                    remove          (RBTreeNode<std::pair<K, V> >* element);
+        void                    remove          (RBTreeNode<pair<K, V> >* element);
         V&                      operator[]      (const K& key);
-        RBTreeNode<std::pair<K, V> >*        search          (const K& key);
+        RBTreeNode<pair<K, V> >*        search          (const K& key);
    
     };
 

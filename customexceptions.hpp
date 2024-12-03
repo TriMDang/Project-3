@@ -38,6 +38,13 @@ class ValueNotInTreeException: public exception{
         }
 };
 
+class key_exception: public exception{
+    public:
+        const char* what() const noexcept override{
+            return "Operation failed: Key not found.";
+        }
+};
+
 //==================================================================================
 // Empty Hash table
 // Author: Tri Dang
@@ -48,5 +55,12 @@ class EmptyHashTable: public exception{
     public:
         const char* what() const noexcept override{
             return "Operation failed: The table is empty.";
+        }
+};
+
+class valueExisted: public exception{
+    public:
+        const char* what() const noexcept override{
+            return "Operation failed: This value already exist.";
         }
 };

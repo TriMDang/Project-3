@@ -12,11 +12,12 @@
 
 #include "MyHashFunction.cpp"
 #include <cstddef>  // For size_t
-#include <utility>  // For std::pair
+#include <utility>  // For pair
+using namespace std;
 
 template <typename K, typename V>
 struct Node {
-    std::pair<K, V> data;  // Key-value pair
+    pair<K, V> data;  // Key-value pair
     Node* next;            // Pointer to the next node
     Node* prev;            // Pointer to the previous node
 };
@@ -25,13 +26,17 @@ template <typename K, typename V>
 class HashMap {
 private:
     size_t table_size;        // Number of buckets
+    size_t num_elements;
     Node<K, V>** table;       // Array of pointers to doubly linked lists
     MyHashFunction<K> hash_function;  // Hash function instance
 
 public:
     // Constructor and Destructor
-    HashMap(std::size_t size);  // Constructor
+    HashMap(size_t size);  // Constructor
     ~HashMap();                 // Destructor
+    HashMap(const HashMap<K, V>& other); //Copy constructor
+    HashMap<K, V>&   operator=(const HashMap<K, V>& other);
+
 
     // Core Methods
     void insert(const K& key, const V& value);  // Insert a key-value pair

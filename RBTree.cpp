@@ -436,6 +436,7 @@ void RBTree<T>::remove(T value) {
 //==============================================================
 template <typename T>
 void RBTree<T>::removeFixup(RBTreeNode<T>* node){
+    if (node != nullptr) {
     while (node != root && node->color == false) {
             if (node == node->parent->left) {
                 RBTreeNode<T>* sibling = node->parent->right;
@@ -500,6 +501,7 @@ void RBTree<T>::removeFixup(RBTreeNode<T>* node){
             }
         }
     node->color = false;
+}
 }
 
 //==============================================================

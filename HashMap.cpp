@@ -9,6 +9,8 @@
 
 #include "HashMap.hpp"
 #include <stdexcept>
+#include "customexceptions.hpp"
+using namespace std;
 
 //==============================================================
 // Constructor
@@ -16,9 +18,9 @@
 // PARAMETERS: size - the number of buckets in the hash table
 //==============================================================
 template <typename K, typename V>
-HashMap<K, V>::HashMap(std::size_t size) : table_size(size), hash_function(size) {
+HashMap<K, V>::HashMap(size_t size) : table_size(size), num_elements(0), hash_function(size) {
     table = new Node<K, V>*[table_size];
-    for (std::size_t i = 0; i < table_size; i++) {
+    for (size_t i = 0; i < table_size; i++) {
         table[i] = nullptr;  // Initialize all buckets to null
     }
 }
@@ -29,7 +31,7 @@ HashMap<K, V>::HashMap(std::size_t size) : table_size(size), hash_function(size)
 //==============================================================
 template <typename K, typename V>
 HashMap<K, V>::~HashMap() {
-    for (std::size_t i = 0; i < table_size; i++) {
+    for (size_t i = 0; i < table_size; i++) {
         Node<K, V>* current = table[i];
         while (current != nullptr) {
             Node<K, V>* temp = current;
@@ -38,6 +40,73 @@ HashMap<K, V>::~HashMap() {
         }
     }
     delete[] table;
+}
+
+//==============================================================
+// HashMap
+// Copy constructor for HashMap. Creates a deep copy of an existing
+// HashMap, copying all nodes and their key-value pairs to the new
+// HashMap instance.
+// PARAMETERS:
+// - other : const reference to the HashMap<K, V> to copy
+// RETURN VALUE:
+// - None
+//==============================================================
+template <typename K, typename V>
+HashMap<K, V>::HashMap(const HashMap<K, V>& other)
+    : table_size(other.table_size), num_elements(other.num_elements), hash_function(other.hash_function) {
+    table = new Node<K, V>*[table_size]();
+    for (size_t i = 0; i < table_size; ++i) {
+        if (other.table[i] != nullptr) {
+            Node<K, V>* other_current = other.table[i];
+            Node<K, V>** this_current = &table[i];
+            while (other_current != nullptr) {
+                *this_current = new Node<K, V>(other_current->data.first, other_current->data.second);
+                if (other_current->next) {
+                    (*this_current)->next = nullptr;
+                }
+                this_current = &((*this_current)->next);
+                other_current = other_current->next;
+            }
+        }
+    }
+}
+
+//==============================================================
+// operator=
+// Overloaded assignment operator that creates a deep copy of the given
+// HashMap, first destructing the current instance and then copying the
+// data from the other HashMap.
+// PARAMETERS:
+// - other : const reference to the HashMap<K, V> to assign
+// RETURN VALUE:
+// - HashMap<K, V>& : Reference to the updated HashMap object
+//==============================================================
+template <typename K, typename V>
+HashMap<K, V>& HashMap<K, V>::operator=(const HashMap<K, V>& other) {
+    this->~HashMap(); //destruct
+
+    table_size = other.table_size;
+    num_elements = other.num_elements;
+    hash_function = other.hash_function;
+
+    table = new Node<K, V>*[table_size]();
+    for (size_t i = 0; i < table_size; ++i) {
+        if (other.table[i] != nullptr) {
+            Node<K, V>* other_current = other.table[i];
+            Node<K, V>** this_current = &table[i];
+            while (other_current != nullptr) {
+                *this_current = new Node<K, V>(other_current->data.first, other_current->data.second);
+                if (other_current->next) {
+                    (*this_current)->next = nullptr;
+                }
+                this_current = &((*this_current)->next);
+                other_current = other_current->next;
+            }
+        }
+    }
+
+    return *this;
 }
 
 //==============================================================
@@ -63,7 +132,7 @@ void HashMap<K, V>::insert(const K& key, const V& value) {
 
     // Key not found; insert at the beginning of the list
     Node<K, V>* newNode = new Node<K, V>();
-    newNode->data = std::make_pair(key, value);
+    newNode->data = make_pair(key, value);
     newNode->next = table[index];
     newNode->prev = nullptr;
 
@@ -71,6 +140,7 @@ void HashMap<K, V>::insert(const K& key, const V& value) {
         table[index]->prev = newNode;  // Update the previous head's prev pointer
     }
     table[index] = newNode;  // Set the new node as the head of the list
+    ++num_elements;
 }
 
 
@@ -95,12 +165,13 @@ void HashMap<K, V>::remove(const K& key) {
                 current->next->prev = current->prev;  // Update next node's prev
             }
             delete current;
+            --num_elements;
             return;
         }
         current = current->next;
     }
 
-    throw std::runtime_error("Key not found");
+    throw key_exception();
 }
 
 
@@ -122,18 +193,7 @@ V& HashMap<K, V>::operator[](const K& key) {
         }
         current = current->next;
     }
-
-    // Key not found; insert with default value
-    Node<K, V>* newNode = new Node<K, V>();
-    newNode->data = std::make_pair(key, V());  // Default value for V
-    newNode->next = table[index];
-    newNode->prev = nullptr;
-
-    if (table[index] != nullptr) {
-        table[index]->prev = newNode;  // Update the previous head's prev pointer
-    }
-    table[index] = newNode;  // Set the new node as the head of the list
-    return table[index]->data.second;
+    throw key_exception();
 }
 
 

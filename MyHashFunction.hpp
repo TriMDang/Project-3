@@ -1,7 +1,9 @@
 #ifndef MyHashFunction_HPP
 #define MyHashFunction_HPP
+using namespace std;
 
 #include <type_traits>  // For type traits
+#include <cstddef>
 
 template <typename K>
 class MyHashFunction {
@@ -10,11 +12,11 @@ private:
     long m;  // The number of buckets in the hash table
 
     // Static assertion to ensure K is numeric
-    static_assert(std::is_arithmetic<K>::value, "Key type must be numeric");
+    static_assert(is_arithmetic<K>::value, "Key type must be numeric");
 
 public:
     // Constructor
-    MyHashFunction(size_t table_size);
+    explicit MyHashFunction(size_t table_size);
 
     // Destructor
     ~MyHashFunction();

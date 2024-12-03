@@ -3,6 +3,7 @@ using namespace std;
 
 #ifndef RBTREE_OPERATIONS_HPP
 #define RBTREE_OPERATIONS_HPP
+#pragma once
 
 template<typename T>
 class RBTreeNode {
