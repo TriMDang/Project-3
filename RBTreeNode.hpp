@@ -1,29 +1,31 @@
-#ifndef RBTREENODE_HPP
-#define RBTREENODE_HPP
-
-#include <utility>
 #include <iostream>
+using namespace std;
 
-template <typename K, typename V>
+#ifndef RBTREE_OPERATIONS_HPP
+#define RBTREE_OPERATIONS_HPP
+#pragma once
+
+template<typename T>
 class RBTreeNode {
 public:
-    std::pair<K, V> data;          // Key-value pair stored in the node
-    RBTreeNode* parent;            // Pointer to parent
-    RBTreeNode* left;              // Pointer to left child
-    RBTreeNode* right;             // Pointer to right child
-    bool color;                    // Node color: true for red, false for black
+    T data;                         
+    RBTreeNode* parent;       
+    RBTreeNode* left;              
+    RBTreeNode* right;              
+    bool color;                     
 
-    // Constructors and Destructor
-    RBTreeNode();
-    RBTreeNode(const std::pair<K, V>& value, bool nodeColor = true);
-    RBTreeNode(const RBTreeNode<K, V>& other);
-    ~RBTreeNode();
+    // The 4 default methods
+    RBTreeNode<T> (void);
+    RBTreeNode<T> (const RBTreeNode<T> &RBTreeNode);
+    ~RBTreeNode<T> (void);
+    RBTreeNode<T>& operator=(const RBTreeNode<T> &RBTreeNode);
 
-    RBTreeNode<K, V>& operator=(const RBTreeNode<K, V>& copiedNode);
 
-    RBTreeNode<K, V>* treeMin();
-    RBTreeNode<K, V>* treeMax();
-    void printInOrderTraversal() const;
+    RBTreeNode<T>*      treeMin();
+    RBTreeNode<T>*      treeMax();
+    void                printPreOrderTraversal()    const;
+    void                printInOrderTraversal()     const;
+    void                printPostOrderTraversal()   const;
 };
 
 #endif
