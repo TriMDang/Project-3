@@ -1,22 +1,26 @@
 #ifndef SET_HPP
 #define SET_HPP
 
-#include "HashMap.hpp"
-#include <iostream>
-#include <cstddef>
+#include "HashMap.cpp"
 
-template <typename K, typename V>
+template <typename T>
 class Set {
 private:
-public:
-    HashMap<K, V> hash_set;
-    Set(size_t size);
-    ~Set();
-    Set(const Set<K, V>& otherSet);
-    Set<K, V>& operator= (const Set<K, V>& otherSet);
+        HashMap<T, T> hashSet;
+        // unint64_t tableSize;
 
-    void insert(const K& value);                   // Inserts a value into the set
-    void remove(const K& value);                   // Removes a value from the set
-    bool setSearch(const K& value) const;             // Checks if a value is in the set
+public:
+        // Constructors & Destructor
+        Set(size_t table_size = 10);                        
+        Set(const Set<T> &other);          
+        ~Set();                        
+
+        // Assignment operator
+        Set<T> operator=(const Set<T> &other);
+
+        // Additional Method
+        void insert(const T& value);
+        void remove(const T& value);
+        bool search(const T& value);
 };
 #endif
