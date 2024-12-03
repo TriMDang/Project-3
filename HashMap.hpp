@@ -12,34 +12,38 @@
 
 #include "MyHashFunction.cpp"
 #include <cstddef>  // For size_t
+#include <utility>  // For pair
 using namespace std;
 
 template <typename K, typename V>
 struct Node {
-    K key;
-    V value;
-    Node* next;
+    pair<K, V> data;  // Key-value pair
+    Node* next;            // Pointer to the next node
+    Node* prev;            // Pointer to the previous node
 };
 
 template <typename K, typename V>
 class HashMap {
 private:
-    size_t table_size;  // Number of buckets
-    Node<K, V>** table;  // Array of pointers to linked lists
+    size_t table_size;        // Number of buckets
+    size_t num_elements;
+    Node<K, V>** table;       // Array of pointers to doubly linked lists
     MyHashFunction<K> hash_function;  // Hash function instance
 
 public:
+    // Constructor and Destructor
     HashMap(size_t size);  // Constructor
-    ~HashMap();  // Destructor
-    HashMap(const HashMap<K, V>& otherMap);
-    HashMap<K, V>& operator=(const HashMap<K, V>& otherMap);
+    ~HashMap();                 // Destructor
+    HashMap(const HashMap<K, V>& other); //Copy constructor
+    HashMap<K, V>&   operator=(const HashMap<K, V>& other);
 
 
+    // Core Methods
     void insert(const K& key, const V& value);  // Insert a key-value pair
-    void remove(const K& key);  // Remove a key-value pair
-    V& operator[](const K& key);  // Access value by key
-    Node<K, V>* search(const K& key) const;  // Search for a key-value pair
-    void clear();
+    void remove(const K& key);                 // Remove a key-value pair
+    V& operator[](const K& key);               // Access value by key
+    Node<K, V>* search(const K& key);          // Search for a key-value pair
 };
 
 #endif // HASHMAP_HPP
+
