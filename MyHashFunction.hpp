@@ -8,7 +8,7 @@ using namespace std;
 template <typename K>
 class MyHashFunction {
 private:
-    long k;  // The constant k for the multiplication method
+    double k;  // The constant k for the multiplication method
     long m;  // The number of buckets in the hash table
 
     // Static assertion to ensure K is numeric
@@ -34,4 +34,3 @@ public:
 // Include the implementation
 
 #endif
-

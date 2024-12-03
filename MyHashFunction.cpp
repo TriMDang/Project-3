@@ -1,4 +1,5 @@
 #include "MyHashFunction.hpp"
+#include <iostream>
 #include <random>
 using namespace std;
 
@@ -12,6 +13,7 @@ using namespace std;
 template <typename K>
 MyHashFunction<K>::MyHashFunction(size_t table_size) {
     // Generate a random double in the range [0, 1)
+    m = table_size;
     random_device rd;                                // Seed
     mt19937 generator(rd());                        // Random number engine
     uniform_real_distribution<double> dist(0.0, 1.0); // Distribution range [0, 1)
@@ -66,5 +68,7 @@ int MyHashFunction<K>::getHash(const K& key) const {
     static_assert(is_arithmetic<K>::value, "Key type must be numeric");
     double product = key * k;                            // Multiply key by k
     double fractional_part = product - static_cast<long>(product); // Extract fractional part
-    return static_cast<int>(m * fractional_part);        // Scale to table size
+    //cout << "K: " << k << endl << "Key: " << key << endl << "m: " << m << endl;
+    return  (static_cast<int>(m * fractional_part));      // Scale to table size
 }
+
