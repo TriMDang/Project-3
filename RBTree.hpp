@@ -10,45 +10,42 @@
 
 #include "RBTreeNode.hpp"
 #include <stdexcept>
-#include <iostream>
-#include <utility>
+#pragma once
 
-template <typename K, typename V>
+
+template <typename T>
 class RBTree {
 public:
-    RBTreeNode<K, V>* root;
-    RBTreeNode<K, V>* TNULL;      // Sentinel node
-    long nodeCount;              // Total number of nodes in the tree
+    RBTreeNode<T>* root;
+    long nodeCount;
 
-    // Constructor and Destructor
-    RBTree();
-    RBTree(const RBTree<K, V>& RBTree);
-    ~RBTree();
-    RBTree<K, V>& operator=(const RBTree<K, V>& RBTree);
+    void        transplant(RBTreeNode<T>* oldNode, RBTreeNode<T>* newNode);
+    void        leftRotation(RBTreeNode<T>* centerNode); // NOT part of assignment (helper function)
+    void        rightRotation(RBTreeNode<T>* centerNode); // NOT part of assignment (helper function)
+    void        insertFixup(RBTreeNode<T>* node);
+    void        removeFixup(RBTreeNode<T>* node);
+    // The 4 default functions:
+    // default constructor
+    RBTree<T>           (void);
+    // copy constructor
+    RBTree<T>           ( const RBTree<T> &RBTree );
+    // destructor
+    void deleteSubTree(RBTreeNode<T>* node);
+    ~RBTree<T>          ();
+    // operator = 
+    RBTree<T>&          operator=(const RBTree<T>& RBTree);
 
-    // Core Methods
-    bool isEmpty() const;
-    long size() const;
-    RBTreeNode<K, V>* insert(const K& key, const V& value);
-    void remove(const K& key);
-    RBTreeNode<K, V>* search(const K& key) const;
-    RBTreeNode<K, V>* treeMin() const;
-    RBTreeNode<K, V>* treeMax() const;
-
-    // Traversal Methods
-    void printPreOrderTraversal() const;
-    void printInOrderTraversal() const;
-    void printPostOrderTraversal() const;
-
-private:
-    // Helper Methods
-    void deleteSubTree(RBTreeNode<K, V>* node);
-    void transplant(RBTreeNode<K, V>* oldNode, RBTreeNode<K, V>* newNode);
-    void leftRotation(RBTreeNode<K, V>* centerNode);
-    void rightRotation(RBTreeNode<K, V>* centerNode);
-    void insertFixup(RBTreeNode<K, V>* node);
-    void removeFixup(RBTreeNode<K, V>* node);
-    void printInOrderHelper(RBTreeNode<K, V>* node) const;
+    // Public methods
+    bool                isEmpty()       const;
+    long                size()          const;
+    RBTreeNode<T>*      insert(T value);
+    void remove(T value);
+    RBTreeNode<T>*      search(T value) const;
+    RBTreeNode<T>*      treeMin()       const;
+    RBTreeNode<T>*      treeMax()       const;
+    void        printPreOrderTraversal() const;
+    void        printInOrderTraversal() const;
+    void        printPostOrderTraversal() const;
 
 };
 
