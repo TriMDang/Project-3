@@ -12,6 +12,8 @@
 #include "HashMapTree.cpp"
 #include "Set.cpp"
 using namespace std;
+long failed = 0;
+long success = 0;
 
 //==============================================================
 // Test inserting and searching keys
@@ -35,6 +37,7 @@ void test_insert_and_search() {
     assert(hashMap.search(3)->data.second == "Three");
 
     cout << "test_insert_and_search passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -54,6 +57,7 @@ void test_update_value() {
     assert(hashMap.search(1)->data.second == "Updated One");
 
     cout << "test_update_value passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -74,6 +78,7 @@ void test_remove_key() {
     assert(hashMap.search(1) == nullptr);
 
     cout << "test_remove_key passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -93,6 +98,7 @@ void test_remove_non_existent_key() {
     }
 
     cout << "test_remove_non_existent_key passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -117,6 +123,7 @@ void test_operator_brackets() {
     assert(hashMap[2] == "Two");
 
     cout << "test_operator_brackets passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -133,6 +140,7 @@ void test_empty_hash_map_search() {
     assert(hashMap.search(1) == nullptr);
 
     cout << "test_empty_hash_map_search passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -154,6 +162,7 @@ void test_collision_handling() {
     assert(hashMap.search(2)->data.second == "Two");
 
     cout << "test_collision_handling passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -177,6 +186,7 @@ void test_insert_and_search_HashMapTree() {
     assert(hashMapTree.search(3)->data.second == "Three");
 
     cout << "test_insert_and_search_HashMapTree passed.\n\n";
+    success++;
 }
 
 
@@ -196,6 +206,7 @@ void test_update_value_HashMapTree() {
     assert(hashMapTree.search(1)->data.second == "Updated One");
 
     cout << "test_update_value_HashMapTree passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -214,6 +225,7 @@ void test_remove_key_HashMapTree() {
     assert(hashMapTree.search(1) == nullptr);
 
     cout << "test_remove_key_HashMapTree passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -232,6 +244,7 @@ void test_remove_non_existent_key_HashMapTree() {
     }
 
     cout << "test_remove_non_existent_key_HashMapTree passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -243,6 +256,7 @@ void test_operator_brackets_HashMapTree() {
     assert(hashMapTree[1] == "Two");
 
     cout << "test_operator_brackets_HashMapTree passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -257,6 +271,7 @@ void test_empty_HashMapTree_search() {
     assert(hashMapTree.search(1) == nullptr);
 
     cout << "test_empty_HashMapTree_search passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -277,6 +292,7 @@ void test_collision_handling_HashMapTree() {
     assert(hashMapTree.search(2)->data.second == "Two");
 
     cout << "test_collision_handling_HashMapTree passed.\n\n";
+    success++;
 }
 
 
@@ -293,6 +309,7 @@ void setConstruction(){
     cout << "Is 10 in setter? " << setter.search(10) << endl << "(expected outcome: True)" << endl;
     cout << "Is 21 in setter? " << setter.search(21) << endl << "(expected outcome: False)" << endl;
     cout << "constructing setter completed!" << endl << endl;
+    success++;
 }
 
 //==============================================================
@@ -300,12 +317,30 @@ void setConstruction(){
 // EXPECTS an exception
 //==============================================================
 void setInsertException(){
-    Set<int> setter;
+    Set<int> datastruct;
     cout << "constructing a set called 'datastruct' that has inserted 5." << endl;
-    setter.insert(5);
-    cout << "Is 5 in setter? "  << setter.search(5) << endl << "(expected outcome: True)" << endl << endl << "re-inserting 5 to cause a custom exception" << endl;
-    setter.insert(5);
+    datastruct.insert(5);
+    cout << "Is 5 in setter? "  << datastruct.search(5) << endl << "(expected outcome: True)" << endl << endl << "re-inserting 5 to cause a custom exception" << endl;
+    datastruct.insert(5);
+    success++;
 }
+
+//==============================================================
+// Set construction
+// EXPECTS an exception
+//==============================================================
+void setInsertRemove(){
+    Set<int> structure;
+    cout << "constructing a set called 'datastruct' that has inserted 5. Check its existence, delete it and recheck" << endl;
+    structure.insert(5);
+    cout << "Is 5 in setter? "  << structure.search(5) << endl << "(expected outcome: True)" << endl << endl;
+    structure.remove(5);
+    cout << "Is 5 in setter? "  << structure.search(5) << endl << "(expected outcome: false)" << endl << endl;
+    cout << "insertRemove test complete" << endl << endl;
+    success++;
+
+}
+
 
 
 //==============================================================
@@ -336,6 +371,9 @@ int main() {
     cout << "All tests for HashMapTree passed!\n";
     cout << endl << endl << "Beginning Set testing..." << endl << endl;
     setConstruction();
+    setInsertRemove();
     //setInsertException();
+
+    cout << endl << "All test finished!" << endl << "Number of Test Passed: " << success << endl << "Number of Test Failed: " << failed << endl;
     return 0;
 }
