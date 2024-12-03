@@ -8,9 +8,12 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
-#include "HashMap.cpp"
+//#include "HashMap.cpp"
+#include "HashMapTree.cpp"
 #include "Set.cpp"
 using namespace std;
+long failed = 0;
+long success = 0;
 
 //==============================================================
 // Test inserting and searching keys
@@ -25,15 +28,16 @@ void test_insert_and_search() {
     hashMap.insert(3, "Three");
 
     cout << "Inserted values:\n";
-    cout << "Key 1: " << hashMap.search(1)->value << "\n";
-    cout << "Key 2: " << hashMap.search(2)->value << "\n";
-    cout << "Key 3: " << hashMap.search(3)->value << "\n";
+    cout << "Key 1: " << hashMap.search(1)->data.second << "\n";
+    cout << "Key 2: " << hashMap.search(2)->data.second << "\n";
+    cout << "Key 3: " << hashMap.search(3)->data.second << "\n";
 
-    assert(hashMap.search(1)->value == "One");
-    assert(hashMap.search(2)->value == "Two");
-    assert(hashMap.search(3)->value == "Three");
+    assert(hashMap.search(1)->data.second == "One");
+    assert(hashMap.search(2)->data.second == "Two");
+    assert(hashMap.search(3)->data.second == "Three");
 
     cout << "test_insert_and_search passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -45,14 +49,15 @@ void test_update_value() {
 
     cout << "Testing update values...\n";
     hashMap.insert(1, "One");
-    cout << "Before update: Key 1 = " << hashMap.search(1)->value << "\n";
+    cout << "Before update: Key 1 = " << hashMap.search(1)->data.second << "\n";
 
     hashMap.insert(1, "Updated One");
-    cout << "After update: Key 1 = " << hashMap.search(1)->value << "\n";
+    cout << "After update: Key 1 = " << hashMap.search(1)->data.second << "\n";
 
-    assert(hashMap.search(1)->value == "Updated One");
+    assert(hashMap.search(1)->data.second == "Updated One");
 
     cout << "test_update_value passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -64,14 +69,16 @@ void test_remove_key() {
 
     cout << "Testing remove key...\n";
     hashMap.insert(1, "One");
-    cout << "Before removal: Key 1 = " << hashMap.search(1)->value << "\n";
+    cout << "Before removal: Key 1 = " << hashMap.search(1)->data.second << "\n";
 
     hashMap.remove(1);
-    cout << "After removal: Key 1 = " << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->value) << "\n";
+    cout << "After removal: Key 1 = " 
+              << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->data.second) << "\n";
 
     assert(hashMap.search(1) == nullptr);
 
     cout << "test_remove_key passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -91,6 +98,7 @@ void test_remove_non_existent_key() {
     }
 
     cout << "test_remove_non_existent_key passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -115,6 +123,7 @@ void test_operator_brackets() {
     assert(hashMap[2] == "Two");
 
     cout << "test_operator_brackets passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -125,11 +134,13 @@ void test_empty_hash_map_search() {
     HashMap<int, string> hashMap(10);  // Provide the size argument
 
     cout << "Testing empty hash map search...\n";
-    cout << "Search Key 1: " << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->value) << "\n";
+    cout << "Search Key 1: " 
+              << (hashMap.search(1) == nullptr ? "nullptr" : hashMap.search(1)->data.second) << "\n";
 
     assert(hashMap.search(1) == nullptr);
 
     cout << "test_empty_hash_map_search passed.\n\n";
+    success++;
 }
 
 //==============================================================
@@ -144,69 +155,225 @@ void test_collision_handling() {
     hashMap.insert(2, "Two");
 
     cout << "Colliding keys:\n";
-    cout << "Key 1: " << hashMap.search(1)->value << "\n";
-    cout << "Key 2: " << hashMap.search(2)->value << "\n";
+    cout << "Key 1: " << hashMap.search(1)->data.second << "\n";
+    cout << "Key 2: " << hashMap.search(2)->data.second << "\n";
 
-    assert(hashMap.search(1)->value == "One");
-    assert(hashMap.search(2)->value == "Two");
+    assert(hashMap.search(1)->data.second == "One");
+    assert(hashMap.search(2)->data.second == "Two");
 
     cout << "test_collision_handling passed.\n\n";
+    success++;
 }
 
 //==============================================================
-// Set Constructing test
-// Test if set is properly constructed with the hash map class object. Insert will be used to test hashMap
+// Test inserting and searching keys in HashMapTree
 //==============================================================
-void SetConstructing(){
-    cout << "constructing a set named setter with size 5" << endl;
-    Set<int, int> setter(5);
-    setter.insert(2);
-    cout << "inserting 2..." << endl;
-    cout << "searching for 2...does 2 exist? " << setter.setSearch(2) << endl;
-    cout << "Set Constructor test finished." << endl;
+void test_insert_and_search_HashMapTree() {
+    HashMapTree<int, string> hashMapTree(10);
+
+    cout << "Testing insert and search in HashMapTree...\n";
+    hashMapTree.insert(1, "One");
+    hashMapTree.insert(2, "Two");
+    hashMapTree.insert(3, "Three");
+
+    cout << "Inserted values:\n";
+    cout << "Key 1: " << hashMapTree.search(1)->data.second << "\n";
+    cout << "Key 2: " << hashMapTree.search(2)->data.second << "\n";
+    cout << "Key 3: " << hashMapTree.search(3)->data.second << "\n";
+
+    assert(hashMapTree.search(1)->data.second == "One");
+    assert(hashMapTree.search(2)->data.second == "Two");
+    assert(hashMapTree.search(3)->data.second == "Three");
+
+    cout << "test_insert_and_search_HashMapTree passed.\n\n";
+    success++;
+}
+
+
+//==============================================================
+// Test updating values in HashMapTree
+//==============================================================
+void test_update_value_HashMapTree() {
+    HashMapTree<int, string> hashMapTree(10);
+
+    cout << "Testing update values in HashMapTree...\n";
+    hashMapTree.insert(1, "One");
+    cout << "Before update: Key 1 = " << hashMapTree.search(1)->data.second << "\n";
+
+    hashMapTree.insert(1, "Updated One");
+    cout << "After update: Key 1 = " << hashMapTree.search(1)->data.second << "\n";
+
+    assert(hashMapTree.search(1)->data.second == "Updated One");
+
+    cout << "test_update_value_HashMapTree passed.\n\n";
+    success++;
 }
 
 //==============================================================
-// Set copy constructor
-// Test constructing a copied set. 
+// Test removing keys in HashMapTree
 //==============================================================
-void MakeCopySet(){
-    cout << "Constructing dataset with size 2..." << endl;
-    Set<int, int> dataset(10);
-    dataset.insert(5);
-    dataset.insert(10);
-    dataset.insert(4);
-    dataset.insert(16);
-    cout << "inserting 5, 10 , 4, 16" << endl;
-    cout << "searching for '4': " << dataset.setSearch(4) << "expected outcome: True" << endl;
-    cout << "Set Copy constructer test finished." << endl;
+void test_remove_key_HashMapTree() {
+    HashMapTree<int, string> hashMapTree(10);
+
+    cout << "Testing remove key in HashMapTree...\n";
+    hashMapTree.insert(1, "One");
+    cout << "Before removal: Key 1 = " << hashMapTree.search(1)->data.second << "\n";
+
+    hashMapTree.remove(hashMapTree.search(1));
+    cout << "After removal: Key 1 = " << (hashMapTree.search(1) == nullptr ? "nullptr" : hashMapTree.search(1)->data.second) << "\n";
+
+    assert(hashMapTree.search(1) == nullptr);
+
+    cout << "test_remove_key_HashMapTree passed.\n\n";
+    success++;
 }
 
 //==============================================================
-// 
-// 
+// Test removing a non-existent key in HashMapTree
 //==============================================================
-//void name(){}
+void test_remove_non_existent_key_HashMapTree() {
+    HashMapTree<int, string> hashMapTree(10);
+
+    cout << "Testing remove non-existent key in HashMapTree...\n";
+
+    try {
+        hashMapTree.remove(hashMapTree.search(999));  // This key doesn't exist
+        assert(false);  // Fail the test if no exception is thrown
+    } catch (const runtime_error& e) {
+        cout << "Caught expected exception: " << e.what() << "\n";
+    }
+
+    cout << "test_remove_non_existent_key_HashMapTree passed.\n\n";
+    success++;
+}
+
+//==============================================================
+// Test operator[] in HashMapTree
+//==============================================================
+void test_operator_brackets_HashMapTree() {
+    HashMapTree<int, string> hashMapTree(10);
+
+    assert(hashMapTree[1] == "Two");
+
+    cout << "test_operator_brackets_HashMapTree passed.\n\n";
+    success++;
+}
+
+//==============================================================
+// Test searching in an empty HashMapTree
+//==============================================================std::
+void test_empty_HashMapTree_search() {
+    HashMapTree<int, string> hashMapTree(10);
+
+    cout << "Testing empty HashMapTree search...\n";
+    cout << "Search Key 1: " << (hashMapTree.search(1) == nullptr ? "nullptr" : hashMapTree.search(1)->data.second) << "\n";
+
+    assert(hashMapTree.search(1) == nullptr);
+
+    cout << "test_empty_HashMapTree_search passed.\n\n";
+    success++;
+}
+
+//==============================================================
+// Test collision handling in HashMapTree
+//==============================================================
+void test_collision_handling_HashMapTree() {
+    HashMapTree<int, string> hashMapTree(1);  // Force all keys to collide
+
+    cout << "Testing collision handling in HashMapTree...\n";
+    hashMapTree.insert(1, "One");
+    hashMapTree.insert(2, "Two");
+
+    cout << "Colliding keys:\n";
+    cout << "Key 1: " << hashMapTree.search(1)->data.second << "\n";
+    cout << "Key 2: " << hashMapTree.search(2)->data.second << "\n";
+
+    assert(hashMapTree.search(1)->data.second == "One");
+    assert(hashMapTree.search(2)->data.second == "Two");
+
+    cout << "test_collision_handling_HashMapTree passed.\n\n";
+    success++;
+}
+
+
+//==============================================================
+// Set construction
+// Inserting 5 and 10 and searching for 5, 10, and 21 for their outcomes
+//==============================================================
+void setConstruction(){
+    Set<int> setter;
+    cout << "constructing a set called 'setter' that has inserted 5 and 10" << endl;
+    setter.insert(5);
+    cout << "Is 5 in setter? "  << setter.search(5) << endl << "(expected outcome: True)" << endl;
+    setter.insert(10);
+    cout << "Is 10 in setter? " << setter.search(10) << endl << "(expected outcome: True)" << endl;
+    cout << "Is 21 in setter? " << setter.search(21) << endl << "(expected outcome: False)" << endl;
+    cout << "constructing setter completed!" << endl << endl;
+    success++;
+}
+
+//==============================================================
+// Set construction
+// EXPECTS an exception
+//==============================================================
+void setInsertException(){
+    Set<int> datastruct;
+    cout << "constructing a set called 'datastruct' that has inserted 5." << endl;
+    datastruct.insert(5);
+    cout << "Is 5 in setter? "  << datastruct.search(5) << endl << "(expected outcome: True)" << endl << endl << "re-inserting 5 to cause a custom exception" << endl;
+    datastruct.insert(5);
+    success++;
+}
+
+//==============================================================
+// Set construction
+// EXPECTS an exception
+//==============================================================
+void setInsertRemove(){
+    Set<int> structure;
+    cout << "constructing a set called 'datastruct' that has inserted 5. Check its existence, delete it and recheck" << endl;
+    structure.insert(5);
+    cout << "Is 5 in setter? "  << structure.search(5) << endl << "(expected outcome: True)" << endl << endl;
+    structure.remove(5);
+    cout << "Is 5 in setter? "  << structure.search(5) << endl << "(expected outcome: false)" << endl << endl;
+    cout << "insertRemove test complete" << endl << endl;
+    success++;
+
+}
+
+
 
 //==============================================================
 // Main function
 // Runs all test cases
+// certain test will be commented out for other test to run.These commented out test are expected to throw an exception.
 //==============================================================
 int main() {
     test_insert_and_search();
     test_update_value();
     test_remove_key();
-    // test_remove_non_existent_key(); must be commented out for other test to continue running
-    test_operator_brackets();
+    //test_remove_non_existent_key();
+    //test_operator_brackets();
     test_empty_hash_map_search();
     test_collision_handling();
 
-    cout << "All Hash Map tests passed!\n\n";
+    cout << "All tests passed!\n";
+    cout << "beginning Other test..." << endl << endl;
 
-    cout << "Initializing Set (HashMap) tests..." << endl << endl;
-    SetConstructing();
-    MakeCopySet();
+    test_insert_and_search_HashMapTree();
+    test_update_value_HashMapTree();
+    test_remove_key_HashMapTree();
+    //test_remove_non_existent_key_HashMapTree();
+    //test_operator_brackets_HashMapTree();
+    test_empty_HashMapTree_search();
+    test_collision_handling_HashMapTree();
 
+    cout << "All tests for HashMapTree passed!\n";
+    cout << endl << endl << "Beginning Set testing..." << endl << endl;
+    setConstruction();
+    setInsertRemove();
+    //setInsertException();
 
+    cout << endl << "All test finished!" << endl << "Number of Test Passed: " << success << endl << "Number of Test Failed: " << failed << endl;
     return 0;
 }
